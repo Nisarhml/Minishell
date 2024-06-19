@@ -1,0 +1,12 @@
+total 124
+-rw-r--r-- 1 aguezzi 2022_nice  3325 Jun 19 14:15 a
+drwxr-xr-x 3 aguezzi 2022_nice    18 Jun 19 15:13 build
+drwxr-xr-x 3 aguezzi 2022_nice    38 Jun 18 17:41 includes
+-rw-r--r-- 1 aguezzi 2022_nice  4314 Jun 18 20:16 Makefile
+-rw-r--r-- 1 aguezzi 2022_nice  1075 Jun 18 19:02 makefile_an.md
+-rwxr-xr-x 1 aguezzi 2022_nice 98040 Jun 19 15:13 minishell
+-rw-r--r-- 1 aguezzi 2022_nice   581 Jun 19 15:14 po
+-rw-r--r-- 1 aguezzi 2022_nice     0 Jun 19 15:17 ppppp
+-rw-r--r-- 1 aguezzi 2022_nice   574 Jun 18 15:50 README.md
+-rw-r--r-- 1 aguezzi 2022_nice   528 Jun 19 14:57 rr
+drwxr-xr-x 6 aguezzi 2022_nice    88 Jun 18 19:10 src
