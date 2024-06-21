@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+         #
+#    By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/24 16:33:46 by aguezzi           #+#    #+#              #
-#    Updated: 2024/06/18 20:16:25 by aguezzi          ###   ########.fr        #
+#    Updated: 2024/06/21 18:13:55 by nihamila         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,26 +22,29 @@ PATHSL = src/lexer/
 PATHSP = src/parser/
 PATHSB = src/builtins/
 PATHSEX = src/expander/
-PATHSU = src/utils/
+PATHSS = src/signaux/
 PATHSE = src/error/
 PATHEX = src/exec/
 
 BUILD_PATHS = $(PATHO)
 
 src =	src/main.c\
-		src/utils/get_env.c\
-		src/utils/utils_lexer.c\
+		src/lexer/utils_lexer.c\
 		src/lexer/lexer.c\
 		src/lexer/token.c\
 		src/lexer/token_utils.c\
 		src/lexer/handle_quote.c\
 		src/lexer/str_to_token.c\
+		src/lexer/str_to_token_utils.c\
+		src/lexer/trim_input.c\
+		src/signaux/signaux.c\
 		src/expander/expander.c\
+		src/expander/dollars_why.c\
 		src/expander/expander_utils.c\
 		src/exec/minishell.c src/exec/create_lists.c src/exec/tokens_error.c src/exec/cmds_args.c \
 		src/exec/infile_outfile.c src/exec/heredocs.c \
 		src/exec/open_check_files.c src/exec/paths.c src/exec/fork_part.c src/exec/builtins.c \
-		src/exec/export_create.c src/exec/cmd_cd.c src/exec/cmd_export_1.c src/exec/cmd_export_2.c src/exec/cmd_unset.c
+		src/exec/export_create.c src/exec/cmd_cd.c src/exec/cmd_export_1.c src/exec/cmd_export_2.c src/exec/cmd_unset.c\
 
 OBJS = $(addprefix $(PATHO), $(notdir $(patsubst %.c, %.o, $(src))))
 
@@ -83,25 +86,25 @@ define compile_template
 	@BAR=$$(expr 25 \* $(FICH_COUNT) / $(NBR_TOT_FICHIER))
 endef
 
-$(PATHO)%.o: $(PATHS)%.c
+$(PATHO)%.o: $(PATHS)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHSL)%.c
+$(PATHO)%.o: $(PATHSL)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHSB)%.c
+$(PATHO)%.o: $(PATHSB)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHSEX)%.c
+$(PATHO)%.o: $(PATHSEX)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHSU)%.c
+$(PATHO)%.o: $(PATHSS)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHSE)%.c
+$(PATHO)%.o: $(PATHSE)%.c | $(PATHO)
 	$(compile_template)
 
-$(PATHO)%.o: $(PATHEX)%.c
+$(PATHO)%.o: $(PATHEX)%.c | $(PATHO)
 	$(compile_template)
 
 $(NAME): $(LIBFT) $(OBJS) $(HEADER)
@@ -109,21 +112,26 @@ $(NAME): $(LIBFT) $(OBJS) $(HEADER)
 	@echo ""
 	@echo " ${GRAS}${RED}-> COMPILATION TERMINEE${RESET}${GRAS}${GREEN}[MINISHELL]${RESET}"
 	@printf " ${RED}${GRAS}[${GREEN}%-23.${BAR}s${RED}] [%d/%d (%d%%)]${RESET}" "-----------------------" ${FICH_COUNT} ${NBR_TOT_FICHIER} ${NBR_COMPILER}
+	@echo "\n  ${GRAS}${GREEN}                                            "
+	@echo "   __  __ _____ _   _ _____  _____ _    _ ______ _      _      "
+	@echo "  |  \/  |_   _| \ | |_   _|/ ____| |  | |  ____| |    | |     "
+	@echo "  | \  / | | | |  \| | | | | (___ | |__| | |__  | |    | |     "
+	@echo "  | |\/| | | | |     | | |  \___ \|  __  |  __| | |    | |     "
+	@echo "  | |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ "
+	@echo "  |_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|"
+	@echo "                                                               "
+	@echo "\n${RESET}                                                     "
 #@echo "${UP}${UP}${UP}"
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTP)
 
-$(PATHB):
-	@$(MKDIR) $(PATHB)
-
-$(PATHO):
-	@$(MKDIR) $(PATHO)
+$(BUILD_PATHS):
+	@$(MKDIR) -p $(BUILD_PATHS)
 
 clean:
 	@rm -f $(OBJS)
-	@rm -f $(PATHB).tmp*
-	@rmdir $(PATHO) $(PATHB)
+	@rmdir $(BUILD_PATHS)
 	@echo "${ORANGE}${GRAS}\t🗑  NETTOYAGE 🗑${RESET}"
 	@echo "${YEL}${GRAS} 🗑 Supression des fichiers binaires.🗑${RESET}"
 	@make fclean -s -C $(LIBFTP)
@@ -139,6 +147,7 @@ fclean: clean
 re: fclean all
 
 .PRECIOUS: $(PATHO)%.o
+
 
 black 				=	"[1;30m"
 red 				=	"[1;31m"
