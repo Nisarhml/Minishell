@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/19 14:32:48 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 15:58:48 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ typedef struct s_var_env
 {
     char                    *variable;
     char                    *name;
+    char                    *value;
+    char                    *tmp_value;
     struct  s_var_env       *next;
 }   t_var_env;
 
@@ -141,6 +143,7 @@ typedef struct s_var_export
     char                    *variable;  // chaine entiere avec nom de variable '=' valeur
     char                    *name;  // nom de la variable
     char                    *value;  // valeur de la variable
+    char                    *tmp_value;
     struct  s_var_export    *next;
 }   t_var_export;
 
@@ -182,8 +185,11 @@ typedef struct s_begin_pipes
     t_begin_env     *env_list;
     char            *pwd;
     char            *oldpwd;
+    t_var_env       *env_free;
+    t_var_export    *export_free;
     int             sortie_error;
     int             _stdout;
+    int             _stdin;
 }   t_begin_pipes;
 
 // creation de ma liste de base envoye par le lexer + creation de ma liste de tranches de pipe
@@ -245,7 +251,7 @@ void    close_pipes_child(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 void    close_pipes_parent(t_begin_pipes *pipes_list);
 void	wait_childs(t_begin_pipes *pipes_list);
 void    exec_no_pipe(t_begin_pipes *pipes_list, char **env);
-void    prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+int     prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 
 // builtins
 int	    builtins(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
@@ -253,9 +259,9 @@ int     command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int     command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int     command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int 	command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
-void	check_variable_delete(t_begin_pipes *pipes_list, char *arg);
-void	delete_in_env(t_begin_pipes *pipes_list, t_var_env *var, char *arg);
-void	delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, char *arg);
+void    check_variable_delete(t_begin_pipes *pipes_list, char *name);
+void	delete_in_env(t_begin_pipes *pipes_list, t_var_env *var, char *name);
+void	delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, char *name);
 int	    command_echo(t_pipes_part *pipe_part);
 void	loop_flag_echo(char **args, int *i);
 int	    command_cd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);

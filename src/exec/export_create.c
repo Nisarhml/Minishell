@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:44:38 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/19 14:04:53 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 17:07:16 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ void    create_export(t_begin_pipes *pipes_list, char **env)  // je cree ma list
                     tmp2 = value_ref;
                     value_ref[ft_strchr(value_ref, '=') - value_ref] = '\0';
                     if (ft_strcmp(value, value_ref) < 0)
+                    {
+                        free(tmp2);
                         break;
+                    }
                     ref = ref->next;
                     free(tmp2);
                 }
@@ -91,6 +94,7 @@ void    determine_name_value(t_begin_pipes *pipes_list)
             var->name = ft_strdup(var->variable);
             var->name[ft_strchr(var->name, '=') - var->name] = '\0';
             var->value = ft_strdup(var->variable);
+            var->tmp_value = var->value;
             var->value += (ft_strchr(var->value, '=') - var->value + 1);
         }
         else
@@ -109,14 +113,17 @@ void    affich_export_list(t_begin_pipes *pipes_list)
     var = pipes_list->export_list->first;
     while (var)
     {
-        printf("%s\n", var->variable);
+        if (var->value != NULL)
+            printf("declare -x %s=\"%s\"\n", var->name, var->value);
+        else
+            printf("declare -x %s\n", var->name);
         var = var->next;
     }
-	printf("\n------\n\n");
+	/*printf("\n------\n\n");
 	var = pipes_list->export_list->first;
     while (var)
     {
         printf("n = %s / v = %s\n", var->name, var->value);
         var = var->next;
-    }
+    }*/
 }

@@ -132,3 +132,8 @@ chaine stockee bien au chaud
 
 
 A FAIRE : quand un fichier n'existe pas en infile, au dela du message d erreur a afficher, il ne faut pas executer la commande du segment
+
+
+DEPUIS QUE J'AI LE PROMPT :
+
+** cas particulier : quand je fais par exemple wc tout seul ou bien cat, j'ai une sorte de nouveau prompt dans lequel je peux ecrire des choses, et lorsque je Ctrl+C je dois revenir a mon prompt de base et non pas quitter le programme

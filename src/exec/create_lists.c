@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 11:46:58 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/19 15:13:40 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:09:15 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void    init_pipes_list(t_begin_pipes *pipes_list, char **env)
     pipes_list->oldpwd = NULL;
     pipes_list->sortie_error = 0;
     pipes_list->_stdout = dup(STDOUT_FILENO);
+    pipes_list->_stdin = dup(STDIN_FILENO);
     i = 0;
     while (env[i])
     {

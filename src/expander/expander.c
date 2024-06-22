@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/18 17:56:34 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:38:57 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,4 @@ char	remove_unnecessary_quotes(char *str)
 	}
 	return (in_quote);
 }
-/*test*/
+
