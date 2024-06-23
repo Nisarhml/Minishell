@@ -6,7 +6,6 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 18:56:06 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +37,9 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		prompt_data = prompt_user_for_input();
-		if (!prompt_data->input)
-		{
-			printf("exit\n");
-			return (0);
-		}
-		if (prompt_data->input)
+		if (!prompt_data)
+			break;
+		if (prompt_data->input[0] != '\0')
 		{
 			trimmed_str = trim_input(prompt_data->input);
 			if (unclosed_quotes(trimmed_str))
@@ -82,9 +78,32 @@ int	error_pipe_redir(t_begin *begin_list)
 	t_token	*current;
 
 	current = begin_list->first;
+	if (current->value[0] == '|')
+	{
+		printf("syntax error near unexpected token `|'\n");
+		return (1);
+	}
 	while (current)
 	{
-		if (current->token != 5)
+		if (ft_strcmp(current->value, "||") == 0)
+		{
+			printf("syntax error near unexpected token `|'\n");
+			return (1);
+		}
+		if (current->token == 4)
+		{
+			if (current->next)
+			{
+				if (current->next->token == 4)
+				{
+					printf("syntax error near unexpected token ");
+					printf("`%c`\n", current->next->value[0]);
+					return (1);
+				}
+			}
+		}
+		if (current->token == 0 || current->token == 1
+			|| current->token == 2 || current->token == 3)
 		{
 			if (current->next)
 			{
@@ -94,6 +113,11 @@ int	error_pipe_redir(t_begin *begin_list)
 					printf("`%c`\n", current->next->value[0]);
 					return (1);
 				}
+			}
+			else
+			{
+				printf("syntax error near unexpected token `newline`\n");
+				return (1);
 			}
 		}
 		current = current->next;
@@ -185,8 +209,6 @@ t_prompt	*prompt_user_for_input(void)
 		return (NULL);
 	prompt_data->input = readline("MINISHELL <{0_0}> $> ");
 	add_history(prompt_data->input);
-	//if (!prompt_data->input)
-		//return (0);
 	return (prompt_data);
 }
 void print_token_list(t_token *elem)

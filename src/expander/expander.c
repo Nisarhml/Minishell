@@ -6,7 +6,6 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/23 14:23:47 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,3 +114,4 @@ char	remove_unnecessary_quotes(char *str)
 	}
 	return (in_quote);
 }
+

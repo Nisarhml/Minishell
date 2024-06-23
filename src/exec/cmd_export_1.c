@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:16:04 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/18 19:26:59 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 15:36:04 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part) // les variables possibles : commence par lettre ou '_', et contient lettres '_' et chiffres
 {
-	if (!pipe_part->args)
+	if (!pipe_part->args[1])
 		affich_export_list(pipes_list);
 	else
 	{
@@ -38,7 +38,7 @@ void check_args_export(t_begin_pipes *pipes_list, char **args)
 	int j;
 
 	i = 1;
-	while (args[1])
+	while (args[i])
 	{
 		j = 0;
 		while (args[i][j])
@@ -78,6 +78,7 @@ void add_arg_export(t_begin_pipes *pipes_list, char *arg) // (tenter de reussir 
             break;
 		ref = ref->next;
 	}
+	printf("name = %s\n", name);   // regler ici le PROBLEME du free de name
 	if (!ref)
 		add_in_export(pipes_list, arg, name, value);
 	modify_env(pipes_list, arg, name);
@@ -89,7 +90,6 @@ int same_name(t_var_export *ref, char *name, char *arg, char *value)
     {
         free(ref->variable);
         free(ref->value);
-        free(name);
         ref->variable = arg;
         ref->value = value;
         return (1);
