@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 18:17:52 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:01:49 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char	*mini_strstr(char *str, char *to_find);
 
 /*===============================LEXER.C=====================================*/
 
-t_token		*tokenize_and_process(char *str, t_var_env *env_list);
+t_token		*tokenize_and_process(char *str, t_begin_pipes *pipes_list);
 int			find_token_type(char *str);
 void		add_word(t_token **lexer, char *str, int token);
 
@@ -196,9 +196,9 @@ char		**split_str_by_spaces_and_quotes(char *str);
 /*===========================EXPANDER.C======================================*/
 
 char		*get_env_name(char *str);
-char		*replace_env_var(char *str, int i, t_var_env *env_list);
-char		*replace_env_vars(char *str, t_var_env *env_list);
-char		*get_env_value(t_var_env *env_list, char *name);
+char		*replace_env_var(char *str, int i, t_begin_pipes *pipes_list);
+char		*replace_env_vars(char *str, t_begin_pipes *pipes_list);
+char		*get_env_value(t_begin_pipes *pipes_list, char *name);
 char		remove_unnecessary_quotes(char *str);
 
 /*=====================EXPANDER_UTILS.C======================================*/
@@ -210,11 +210,11 @@ char		env_in_quote(char c, char in_quote);
 
 /*==============================DOLLARS_WHY.C================================*/
 
-char	*expand_last_status(char *input);
-char	*build_expanded(char *input, char *status_str);
-void	replace_and_copy(char *dest, char *src, size_t n);
-char	*find_position(char *input, char *status_str);
-void	update_last_status(int status);
+//char	*expand_last_status(char *input);
+//char	*build_expanded(char *input, char *status_str);
+//void	replace_and_copy(char *dest, char *src, size_t n);
+//char	*find_position(char *input, char *status_str);
+//void	update_last_status(int status);
 
 /*==============================SIGNAUX.C====================================*/
 

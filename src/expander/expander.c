@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 15:57:53 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:23:47 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	*get_env_name(char *str)
 	return (name);
 }
 
-char	*get_env_value(t_var_env *env_list, char *name)
+char	*get_env_value(t_begin_pipes *pipes_list, char *name)
 {
 	t_var_env *current;
 
-	current = env_list;
+	current = pipes_list->env_list->first;
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
@@ -45,26 +45,34 @@ char	*get_env_value(t_var_env *env_list, char *name)
 	return (NULL);
 }
 
-char	*replace_env_var(char *str, int i, t_var_env *env_list)
+char	*replace_env_var(char *str, int i, t_begin_pipes *pipes_list)
 {
 	char	*name;
 	char	*value;
 	char	*new_str;
 
 	name = get_env_name(str + i);
-	value = get_env_value(env_list, name);
+	if (ft_strcmp(name, "?") == 0)
+	{
+		value = ft_itoa(pipes_list->sortie_error);
+		printf("value = %s\n", value);
+	}
+	else
+	{
+		value = get_env_value(pipes_list, name);
+	}
 	str[i - 1] = '\0';
 	while(is_valid_simple_envchar(str[i]))
 		i++;
 	if (!value)
 		value = ft_strdup("");
-	new_str = ft_strjoin_three_part(str, value,str + i);
+	new_str = ft_strjoin_three_part(str ,value ,str + i);
 	free(name);
 	free(str);
 	return (new_str);
 }
 
-char	*replace_env_vars(char *str, t_var_env *env_list)
+char	*replace_env_vars(char *str, t_begin_pipes *pipes_list)
 {
 	int 	i;
 	char	in_quote;
@@ -75,7 +83,7 @@ char	*replace_env_vars(char *str, t_var_env *env_list)
 	{
 		in_quote = env_in_quote(str[i], in_quote);
 		if(str[i] == '$' && in_quote != '\'')
-			str = replace_env_var(str, i + 1, env_list);
+			str = replace_env_var(str, i + 1, pipes_list);
 		i++;
 	}
 	return (str);

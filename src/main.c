@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 17:16:41 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:56:06 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	main(int ac, char **av, char **env)
 	create_export(pipes_list, env);  // create export_list
 	init_pipes_list(pipes_list, env);
 	handle_prompt();
-	
 	while (1)
 	{
 		prompt_data = prompt_user_for_input();
@@ -54,7 +53,7 @@ int	main(int ac, char **av, char **env)
 				free(prompt_data);
 				continue; // Revenir au prompt
 			}
-			token_list = tokenize_and_process(trimmed_str, pipes_list->env_list->first);
+			token_list = tokenize_and_process(trimmed_str, pipes_list);
 			begin_list->first = token_list;
 			//printf("\nliste de mots : \n\n");
 			affich_list(begin_list);

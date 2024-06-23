@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:26:36 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 15:18:25 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:59:30 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	add_word(t_token **lexer, char *str, int token)
 	}
 }
 
-t_token	*tokenize_and_process(char *str, t_var_env	*env_list)
+t_token	*tokenize_and_process(char *str, t_begin_pipes *pipes_list)
 {
 	t_token		*lexer;
 	t_token		*current;
@@ -72,7 +72,7 @@ t_token	*tokenize_and_process(char *str, t_var_env	*env_list)
 	while (current)
 	{
 		if (ft_strchr(current->value, '$'))
-			current->value = replace_env_vars(current->value, env_list);
+			current->value = replace_env_vars(current->value, pipes_list);
 		in_quote = remove_unnecessary_quotes(current->value);
 		if (in_quote)
 		{

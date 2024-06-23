@@ -6,7 +6,7 @@
 #    By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/24 16:33:46 by aguezzi           #+#    #+#              #
-#    Updated: 2024/06/21 18:13:55 by nihamila         ###   ########.fr        #
+#    Updated: 2024/06/21 19:02:37 by nihamila         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ src =	src/main.c\
 		src/lexer/trim_input.c\
 		src/signaux/signaux.c\
 		src/expander/expander.c\
-		src/expander/dollars_why.c\
 		src/expander/expander_utils.c\
 		src/exec/minishell.c src/exec/create_lists.c src/exec/tokens_error.c src/exec/cmds_args.c \
 		src/exec/infile_outfile.c src/exec/heredocs.c \
