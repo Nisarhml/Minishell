@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   open_check_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 20:55:01 by aguezzi           #+#    #+#             */
 /*   Updated: 2024/06/22 21:56:46 by aguezzi          ###   ########.fr       */

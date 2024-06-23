@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/22 16:51:46 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +13,8 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_begin         *begin_list;
-    t_begin_pipes   *pipes_list;
+	t_begin			*begin_list;
+	t_begin_pipes	*pipes_list;
 	t_prompt		*prompt_data;
 	t_token			*token_list;
 	char			*trimmed_str;
@@ -25,16 +24,16 @@ int	main(int ac, char **av, char **env)
 		printf("This program doesn't accept arguments\n");
 		exit(EXIT_FAILURE);
 	}
-    begin_list = malloc(sizeof(*begin_list));
-    pipes_list = malloc(sizeof(*pipes_list));
-    if (!begin_list || !pipes_list)
-        exit (1);
-    begin_list->first = NULL;
-
+	begin_list = malloc(sizeof(*begin_list));
+	pipes_list = malloc(sizeof(*pipes_list));
+	if (!begin_list || !pipes_list)
+		exit (1);
+	begin_list->first = NULL;
 	token_list = NULL;
 	build_env(pipes_list, env);  // build env_list
 	create_export(pipes_list, env);  // create export_list
 	init_pipes_list(pipes_list, env);
+	handle_prompt();
 	while (1)
 	{
 		prompt_data = prompt_user_for_input();
@@ -46,15 +45,15 @@ int	main(int ac, char **av, char **env)
 			if (unclosed_quotes(trimmed_str))
 			{
 				free(trimmed_str);
-				free(prompt_data->input);
+				//free(prompt_data->input); check if it's needed to free
 				free(prompt_data);
 				continue; // Revenir au prompt
 			}
-			token_list = tokenize_and_process(trimmed_str);
+			token_list = tokenize_and_process(trimmed_str, pipes_list);
 			begin_list->first = token_list;
-			printf("\nliste de mots : \n\n");
-    		affich_list(begin_list);
-			printf("\n\n");
+			//printf("\nliste de mots : \n\n");
+			affich_list(begin_list);
+			//printf("\n\n");
 			if (error_pipe_redir(begin_list))
 			{
 				free(trimmed_str);
@@ -67,7 +66,7 @@ int	main(int ac, char **av, char **env)
 			//free_lexer(&token_list);
 			free(trimmed_str);
 			token_list = NULL;
-			free(prompt_data->input);
+			//free(prompt_data->input); check if it's needed to free
 			free(prompt_data);
 		}
 	}
@@ -153,7 +152,7 @@ void	free_pipes_list(t_begin_pipes *pipes_list)
 	t_pipes_part	*pipe_part;
 	t_pipes_part	*save_tofree;
 	int				i;
-	
+
 	pipe_part = pipes_list->first;
 	while (pipe_part)
 	{

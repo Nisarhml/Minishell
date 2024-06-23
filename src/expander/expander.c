@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 14:38:57 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +30,48 @@ char	*get_env_name(char *str)
 	return (name);
 }
 
-char	*replace_env_var(char *str, int i)
+char	*get_env_value(t_begin_pipes *pipes_list, char *name)
+{
+	t_var_env *current;
+
+	current = pipes_list->env_list->first;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+char	*replace_env_var(char *str, int i, t_begin_pipes *pipes_list)
 {
 	char	*name;
 	char	*value;
 	char	*new_str;
 
 	name = get_env_name(str + i);
-	value = getenv(name);
+	if (ft_strcmp(name, "?") == 0)
+	{
+		value = ft_itoa(pipes_list->sortie_error);
+		printf("value = %s\n", value);
+	}
+	else
+	{
+		value = get_env_value(pipes_list, name);
+	}
 	str[i - 1] = '\0';
 	while(is_valid_simple_envchar(str[i]))
 		i++;
 	if (!value)
 		value = ft_strdup("");
-	new_str = ft_strjoin_three_parts(str, value,str + i);
+	new_str = ft_strjoin_three_part(str ,value ,str + i);
 	free(name);
 	free(str);
 	return (new_str);
 }
 
-char	*replace_env_vars(char *str)
+char	*replace_env_vars(char *str, t_begin_pipes *pipes_list)
 {
 	int 	i;
 	char	in_quote;
@@ -61,27 +82,10 @@ char	*replace_env_vars(char *str)
 	{
 		in_quote = env_in_quote(str[i], in_quote);
 		if(str[i] == '$' && in_quote != '\'')
-		{
-				printf("str = %s\n str[%c]\n", str, str[i]);
-				//printf("str[%c]\n", str[i]);
-				str = replace_env_var(str, i + 1);
-		}
+			str = replace_env_var(str, i + 1, pipes_list);
 		i++;
 	}
 	return (str);
-}
-
-void	remove_char_at(char *str)
-{
-	int	i;
-
-	i = 0;
-	while(str[i])
-	{
-		str[i] = str[i + 1];
-		i++;
-		printf("str[%c]\n", str[i]);
-	}
 }
 
 char	remove_unnecessary_quotes(char *str)

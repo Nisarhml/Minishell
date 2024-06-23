@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:24:01 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/18 17:57:41 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/21 18:18:06 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/minishell.h" //norm done !
 
 char	*mini_strcpy(char *dest, const char *src)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	while (src[i] != '\0')
 	{
@@ -24,10 +25,34 @@ char	*mini_strcpy(char *dest, const char *src)
 	dest[i] = '\0';
 	return (dest);
 }
-char *mini_strcat(char *dest, const char *src)
+
+char	*mini_strstr(char *str, char *to_find)
 {
 	int i;
 	int j;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (to_find[j] == str[i + j])
+		{
+			if (to_find[j + 1] == '\0')
+			{
+				return (str + i);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*mini_strcat(char *dest, const char *src)
+{
+	int	i;
+	int	j;
+
 	i = 0;
 	if (!dest || !src)
 		return (NULL);
@@ -42,12 +67,13 @@ char *mini_strcat(char *dest, const char *src)
 	dest[i + j] = '\0';
 	return (dest);
 }
-char *ft_strjoin_three_parts(const char *s1, const char *s2, const char *s3)
+
+char	*ft_strjoin_three_part(const char *s1, const char *s2, const char *s3)
 {
-	size_t  len1;
-	size_t  len2;
-	size_t  len3;
-	char *result;
+	size_t	len1;
+	size_t	len2;
+	size_t	len3;
+	char	*result;
 
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);

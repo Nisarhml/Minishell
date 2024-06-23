@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:44:49 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/18 17:56:13 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/21 15:06:19 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ int	is_valid_simple_envchar(char c)
 {
 	return ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z')
 			|| (c >= 'a' && c <= 'z') || c == '_');
+}
+
+void	remove_char_at(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i])
+	{
+		str[i] = str[i + 1];
+		i++;
+	}
 }
 
 char env_in_quote(char c, char in_quote)

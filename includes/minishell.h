@@ -3,21 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/22 15:58:48 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../includes/libft/libft.h"
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <strings.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <sys/errno.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -32,6 +38,8 @@ typedef enum {
 	PIPE,
 	WORD,
 } token_type;
+
+extern int	g_last_status;
 
 typedef struct s_token {
 	char			*value;
@@ -57,71 +65,10 @@ typedef	struct	s_env{
 	char *path;
 } t_env;
 
-/*=======================================PROMPT============================================*/
-
-t_prompt	*prompt_user_for_input(void);
-
-/*=====================================UTILS_LEXER.C=======================================*/
-
-char		*mini_strcpy(char *dest, const char *src);
-char 		*ft_strjoin_three_parts(const char *s1, const char *s2, const char *s3);
-char		*mini_strcat(char *dest, const char *src);
-
-/*=====================================LEXER.C=============================================*/
-
-t_token		*lexer(char *str);
-int			find_token_type(char *str);
-t_token		*last_elem(t_token **head);
-void		add_word(t_token **lexer, char *str, int token);
-
-/*==================================STR_TO_TOKEN.C=========================================*/
-
-t_token		*split_string_into_tokens(char *str);
-int			count_words(char *str);
-char		*copy_word_from_str(char *str);
-void		fill_word_array(char **words, char *str);
-
-/*=====================================TOKEN.C=============================================*/
-
-int			contain_token(char *str);
-char		*get_token(char *str, int type);
-char		*get_word(char *str);
-t_token		*tokenize_and_process(char *str);
-void		free_lexer(t_token **tokens);
-
-/*===================================TOKEN_UTILS.C=======================================*/
-
-int			is_token(char c);
-int			is_whitespace(char c);
-char		*trim_input(char *input);
-char		*ft_strjoin_free(char *s1, char *s2, int to_free);
-
-/*=====================================HANDLE_QUOTE.C======================================*/
-
-int			is_in_quote(char c);
-int			unclosed_quotes(char *str);
-char		**split_str_by_spaces_and_quotes(char *str);
-
-/*=========================================EXPANDER.C======================================*/
-
-char		*get_env_name(char *str);
-char		*replace_env_var(char *str, int i);
-char		*replace_env_vars(char *str);
-void		remove_char_at(char *str);
-char		remove_unnecessary_quotes(char *str);
-
-/*====================================EXPANDER_UTILS.C======================================*/
-
-int			is_valid_envchar(char c);
-int			is_valid_simple_envchar(char c);
-char		env_in_quote(char c, char in_quote);
-
-/*==================================PARSER_BUILTINS_EXEC====================================*/
-
 typedef struct s_begin  // pointeur sur liste de tokens
 {
-    t_token *first;
-}   t_begin;
+	t_token *first;
+}	t_begin;
 
 typedef struct s_var_env
 {
@@ -168,7 +115,7 @@ typedef struct s_pipes_part
     int                 if_heredoc; // si == 1 : alors je vais chercher dans mon tableau de heredocs pour recuperer le fd correspondant et le mettre en tant que infile
     int                 fd[2]; // va contenir mon fd infile fd[0] et mon fd outfile fd[1]
     int                 save_stdout;
-    
+
     // les fd ont la priorite sur les pipes en terme d'entree et de sortie, si infile_fd est != -1 alors ce sera notre entree, pareil pour outfile_fd
     struct s_pipes_part *next;
 }   t_pipes_part;
@@ -191,6 +138,97 @@ typedef struct s_begin_pipes
     int             _stdout;
     int             _stdin;
 }   t_begin_pipes;
+
+/*===============================PROMPT======================================*/
+
+t_prompt	*prompt_user_for_input(void);
+
+/*===========================UTILS_LEXER.C===================================*/
+
+char	*mini_strcpy(char *dest, const char *src);
+char	*ft_strjoin_three_part(const char *s1, const char *s2, const char *s3);
+char	*mini_strcat(char *dest, const char *src);
+char	*mini_strstr(char *str, char *to_find);
+
+/*===============================LEXER.C=====================================*/
+
+t_token		*tokenize_and_process(char *str, t_begin_pipes *pipes_list);
+int			find_token_type(char *str);
+void		add_word(t_token **lexer, char *str, int token);
+
+/*=============================STR_TO_TOKEN.C================================*/
+
+t_token		*split_string_into_tokens(char *str);
+//t_token		*add_token(t_token *lexer, char *word, token_type type);
+//void		handle_quote_and_token(char *str, char *word, t_token **lexer);
+//t_token		*extract_and_add_token(char *str, char in_quote, t_token *lexer);
+//t_token		*process_token(char *str, char *word, t_token *lexer);
+
+/*=============================STR_TO_TOKEN_UTILS.C==========================*/
+
+int			count_words(char *str);
+int			skip_spaces(char *str, int i);
+void		fill_word_array(char **words, char *str);
+char		*copy_word_from_str(char *str);
+
+/*===========================TOKEN.C=========================================*/
+
+int			contain_token(char *str);
+char		*get_token(char *str, int type);
+char		*get_word(char *str);
+void		free_lexer(t_token **tokens);
+
+/*==========================TOKEN_UTILS.C====================================*/
+
+int			is_token(char c);
+int			is_whitespace(char c);
+char		*ft_strjoin_free(char *s1, char *s2, int to_free);
+
+/*=============================TRIM_INPUT.C==================================*/
+char		*trim_input(char *input);
+char		manage_quotes(char c, char in_quote);
+char		*join_words(char *str, char *new_str);
+//int			get_next_word(char *str, char *in_quote);
+
+/*===========================HANDLE_QUOTE.C==================================*/
+
+int			is_in_quote(char c);
+int			unclosed_quotes(char *str);
+char		**split_str_by_spaces_and_quotes(char *str);
+
+/*===========================EXPANDER.C======================================*/
+
+char		*get_env_name(char *str);
+char		*replace_env_var(char *str, int i, t_begin_pipes *pipes_list);
+char		*replace_env_vars(char *str, t_begin_pipes *pipes_list);
+char		*get_env_value(t_begin_pipes *pipes_list, char *name);
+char		remove_unnecessary_quotes(char *str);
+
+/*=====================EXPANDER_UTILS.C======================================*/
+
+void		remove_char_at(char *str);
+int			is_valid_envchar(char c);
+int			is_valid_simple_envchar(char c);
+char		env_in_quote(char c, char in_quote);
+
+/*==============================DOLLARS_WHY.C================================*/
+
+//char	*expand_last_status(char *input);
+//char	*build_expanded(char *input, char *status_str);
+//void	replace_and_copy(char *dest, char *src, size_t n);
+//char	*find_position(char *input, char *status_str);
+//void	update_last_status(int status);
+
+/*==============================SIGNAUX.C====================================*/
+
+void	handle_prompt(void);
+void	ft_ctrl_c(int sig);
+void	ft_ctrl_d();
+void	ft_ctrl_sl(int i);
+void	rl_replace_line(const char *str, int i);
+
+/*=======================PARSER_BUILTINS_EXEC================================*/
+
 
 // creation de ma liste de base envoye par le lexer + creation de ma liste de tranches de pipe
 void    affich_list(t_begin *begin_list);

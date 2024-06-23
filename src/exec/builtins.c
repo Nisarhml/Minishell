@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:13:43 by aguezzi           #+#    #+#             */
 /*   Updated: 2024/06/22 16:01:49 by aguezzi          ###   ########.fr       */
@@ -108,7 +108,7 @@ void loop_flag_echo(char **args, int *i)
 int	command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	int		i;
-	
+
 	if (!pipe_part->args[1]) // ici pas besoin de changer la sortie_error
 	{
 		printf("exit\n");

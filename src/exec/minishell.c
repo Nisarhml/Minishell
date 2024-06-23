@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:21:59 by aguezzi           #+#    #+#             */
 /*   Updated: 2024/06/22 21:54:16 by aguezzi          ###   ########.fr       */
@@ -14,21 +14,21 @@
 
 void    parser_exec(t_begin *begin_list, t_begin_pipes *pipes_list, char **env)
 {
-    printf("\nliste de mots : \n\n");
+    //printf("\nliste de mots : \n\n");
     affich_list(begin_list); // --> permet d'afficher tous les char* de mes tokens
     create_pipes_list(begin_list, pipes_list); // --> je cree une liste chainee dans laquelle chaque element correspondra a une tranche de pipes
-    printf("\n ---\n\nliste de tranches de pipe : \n\n");
+    //printf("\n ---\n\nliste de tranches de pipe : \n\n");
     affich_pipes_list(pipes_list);
     //affich_env_list(pipes_list);
     //affich_export_list(pipes_list);
     check_infile_part(pipes_list);
     check_outfile_part(pipes_list);
-    printf("\n ---\n\naffichage des infiles et outfiles : \n\n");
+    //printf("\n ---\n\naffichage des infiles et outfiles : \n\n");
     affich_infiles_outfiles(pipes_list);
     check_cmds_args(pipes_list);
-    printf("\naffichage des cmds et args : \n\n");
+    //printf("\naffichage des cmds et args : \n\n");
     affich_cmds_args(pipes_list);
-    printf("Reaffichage liste : \n\n");
+    //printf("Reaffichage liste : \n\n");
     affich_pipes_list(pipes_list);
     create_heredocs(pipes_list);
     //read_heredoc(pipes_list);
@@ -83,7 +83,7 @@ void    exec_no_pipe(t_begin_pipes *pipes_list, char **env)
 int prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
     int i;
-    
+
     if (!open_close_files(pipe_part))
         return (0);
     define_infile_outfile(pipes_list, pipe_part, 0);
@@ -111,7 +111,7 @@ int prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 void    affich_env_list(t_begin_pipes *pipes_list)
 {
     t_var_env   *var;
-    
+
     var = pipes_list->env_list->first;
     while (var)
     {
@@ -125,7 +125,7 @@ void    build_env(t_begin_pipes *pipes_list, char **env) // pour l'export et uns
     t_var_env   *var;
     t_var_env   *ref;
     int         i;
-    
+
     pipes_list->env_list = malloc(sizeof(t_begin_env));
     if (!pipes_list->env_list)
         exit (1);
@@ -160,7 +160,7 @@ void    close_pipes_parent(t_begin_pipes *pipes_list)
 {
     t_pipes_part    *pipe_part;
     int i;
-    
+
     pipe_part = pipes_list->first;
     i = 0;
     while (pipes_list->p[i] != -1)
