@@ -6,6 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
+/*   Updated: 2024/06/23 16:44:44 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +40,11 @@ int	main(int ac, char **av, char **env)
 		prompt_data = prompt_user_for_input();
 		if (!prompt_data)
 			break;
+		if (!prompt_data->input)
+		{
+			printf("exit\n");
+			return (0);
+		}
 		if (prompt_data->input[0] != '\0')
 		{
 			trimmed_str = trim_input(prompt_data->input);
