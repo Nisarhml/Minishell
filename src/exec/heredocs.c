@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 16:14:36 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/18 19:14:47 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 21:46:20 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void    create_heredocs(t_begin_pipes *pipes_list)
             }
             i++;
         }
-        pipe_part->heredocs[count * 2] = -2;
+        pipe_part->heredocs[count * 2] = -1;
         pipe_part = pipe_part->next;
     }
 }
@@ -55,14 +55,17 @@ void	heredoc(t_pipes_part *pipe_part, char *end, int count)
 		exit (1);
 	while (1)
 	{
-		printf("> ");
+		write(pipe_part->save_stdout, "> ", 2);
 		line = get_next_line(0);
 		if ((ft_strncmp(line, end, ft_strlen(end)) == 0
 				&& ft_strlen(line) == ft_strlen(end) + 1)
 			&& line[0] != '\n')
-			break ;
+        {
+            free(line);
+            break ;
+        }
 		else
 			write(pipe_part->heredocs[count * 2 + 1], line, ft_strlen(line));
+        free(line);
 	}
-	free(line);
 }

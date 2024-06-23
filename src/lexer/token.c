@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:57:14 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/19 13:09:09 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:51:27 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/minishell.h" //norm done !
 
-int contain_token(char *str)
+int	contain_token(char *str)
 {
 	int		i;
 	char	in_quote;
@@ -29,7 +29,7 @@ int contain_token(char *str)
 	return (0);
 }
 
-char *get_token(char *str, int type)
+char	*get_token(char *str, int type)
 {
 	char	*token;
 	int		i;
@@ -46,14 +46,14 @@ char *get_token(char *str, int type)
 			i++;
 		}
 	}
-	return token;
+	return (token);
 }
 
 char	*get_word(char *str)
 {
-	int i;
-	char in_quote;
-	char *word;
+	int		i;
+	char	in_quote;
+	char	*word;
 
 	i = 0;
 	in_quote = 0;
@@ -62,7 +62,6 @@ char	*get_word(char *str)
 		is_in_quote(str[i]);
 		i++;
 	}
-	printf("str[i] vaut :%s\n", str);
 	word = ft_calloc(sizeof(char), i + 1);
 	i = 0;
 	in_quote = 0;
@@ -79,8 +78,8 @@ char	*get_word(char *str)
 
 void	free_lexer(t_token **lexer)
 {
-	t_token *tmp;
-	t_token *current;
+	t_token	*tmp;
+	t_token	*current;
 
 	current = *lexer;
 	while (current)

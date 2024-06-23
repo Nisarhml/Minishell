@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/19 15:11:47 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +13,8 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_begin         *begin_list;
-    t_begin_pipes   *pipes_list;
+	t_begin			*begin_list;
+	t_begin_pipes	*pipes_list;
 	t_prompt		*prompt_data;
 	t_token			*token_list;
 	char			*trimmed_str;
@@ -25,36 +24,36 @@ int	main(int ac, char **av, char **env)
 		printf("This program doesn't accept arguments\n");
 		exit(EXIT_FAILURE);
 	}
-    begin_list = malloc(sizeof(*begin_list));
-    pipes_list = malloc(sizeof(*pipes_list));
-    if (!begin_list || !pipes_list)
-        exit (1);
-    begin_list->first = NULL;
-
+	begin_list = malloc(sizeof(*begin_list));
+	pipes_list = malloc(sizeof(*pipes_list));
+	if (!begin_list || !pipes_list)
+		exit (1);
+	begin_list->first = NULL;
 	token_list = NULL;
 	build_env(pipes_list, env);  // build env_list
 	create_export(pipes_list, env);  // create export_list
 	init_pipes_list(pipes_list, env);
+	handle_prompt();
 	while (1)
 	{
 		prompt_data = prompt_user_for_input();
 		if (!prompt_data)
 			break;
-		if (prompt_data->input)
+		if (prompt_data->input[0] != '\0')
 		{
 			trimmed_str = trim_input(prompt_data->input);
 			if (unclosed_quotes(trimmed_str))
 			{
 				free(trimmed_str);
-				free(prompt_data->input);
+				//free(prompt_data->input); check if it's needed to free
 				free(prompt_data);
 				continue; // Revenir au prompt
 			}
-			token_list = tokenize_and_process(trimmed_str);
+			token_list = tokenize_and_process(trimmed_str, pipes_list);
 			begin_list->first = token_list;
-			printf("\nliste de mots : \n\n");
-    		affich_list(begin_list);
-			printf("\n\n");
+			//printf("\nliste de mots : \n\n");
+			affich_list(begin_list);
+			//printf("\n\n");
 			if (error_pipe_redir(begin_list))
 			{
 				free(trimmed_str);
@@ -67,7 +66,7 @@ int	main(int ac, char **av, char **env)
 			//free_lexer(&token_list);
 			free(trimmed_str);
 			token_list = NULL;
-			free(prompt_data->input);
+			//free(prompt_data->input); check if it's needed to free
 			free(prompt_data);
 		}
 	}
@@ -79,9 +78,32 @@ int	error_pipe_redir(t_begin *begin_list)
 	t_token	*current;
 
 	current = begin_list->first;
+	if (current->value[0] == '|')
+	{
+		printf("syntax error near unexpected token `|'\n");
+		return (1);
+	}
 	while (current)
 	{
-		if (current->token != 5)
+		if (ft_strcmp(current->value, "||") == 0)
+		{
+			printf("syntax error near unexpected token `|'\n");
+			return (1);
+		}
+		if (current->token == 4)
+		{
+			if (current->next)
+			{
+				if (current->next->token == 4)
+				{
+					printf("syntax error near unexpected token ");
+					printf("`%c`\n", current->next->value[0]);
+					return (1);
+				}
+			}
+		}
+		if (current->token == 0 || current->token == 1
+			|| current->token == 2 || current->token == 3)
 		{
 			if (current->next)
 			{
@@ -91,6 +113,11 @@ int	error_pipe_redir(t_begin *begin_list)
 					printf("`%c`\n", current->next->value[0]);
 					return (1);
 				}
+			}
+			else
+			{
+				printf("syntax error near unexpected token `newline`\n");
+				return (1);
 			}
 		}
 		current = current->next;
@@ -125,7 +152,7 @@ void	free_pipes_list(t_begin_pipes *pipes_list)
 	t_pipes_part	*pipe_part;
 	t_pipes_part	*save_tofree;
 	int				i;
-	
+
 	pipe_part = pipes_list->first;
 	while (pipe_part)
 	{
@@ -182,11 +209,6 @@ t_prompt	*prompt_user_for_input(void)
 		return (NULL);
 	prompt_data->input = readline("MINISHELL <{0_0}> $> ");
 	add_history(prompt_data->input);
-	if (!prompt_data->input)
-	{
-		printf("exit\n");
-		exit(EXIT_SUCCESS);
-	}
 	return (prompt_data);
 }
 void print_token_list(t_token *elem)

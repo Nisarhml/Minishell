@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:13:43 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/19 14:50:43 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 16:01:49 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	t_var_env *var;
 
-	if (pipe_part->args)
+	if (pipe_part->args[1])
 	{
 		printf("env: No options or arguments\n");
 		return (1);
@@ -34,7 +34,7 @@ int command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 
 int command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
-	if (pipe_part->args)
+	if (pipe_part->args[1])
 	{
 		if (pipe_part->args[1][0] == '-' && pipe_part->args[1][1]) // check si il y a option avec '-' et au moins 1 caractere derriere
 		{
@@ -108,10 +108,11 @@ void loop_flag_echo(char **args, int *i)
 int	command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	int		i;
-	
+
 	if (!pipe_part->args[1]) // ici pas besoin de changer la sortie_error
 	{
 		printf("exit\n");
+		exit (pipes_list->sortie_error % 256);
 		return (1);
 	}
 	else if (!pipe_part->args[2])
@@ -127,12 +128,14 @@ int	command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 				write(pipe_part->save_stdout, "exit: ", 6);
 				write(pipe_part->save_stdout, pipe_part->args[1], ft_strlen(pipe_part->args[1]));
 				write(pipe_part->save_stdout, ": numeric argument required\n", 28);
+				exit (pipes_list->sortie_error % 256);
 				return (1);
 			}
 			i++;
 		}
 		printf("exit\n");
 		pipes_list->sortie_error = ft_atoi(pipe_part->args[1]) % 256;
+		exit (pipes_list->sortie_error % 256);
 		return (1);
 	}
 	else
@@ -146,6 +149,7 @@ int	command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 				write(pipe_part->save_stdout, "exit: ", 6);
 				write(pipe_part->save_stdout, pipe_part->args[1], ft_strlen(pipe_part->args[1]));
 				write(pipe_part->save_stdout, ": numeric argument required\n", 28);
+				exit (pipes_list->sortie_error % 256);
 				return (1);
 			}
 			i++;

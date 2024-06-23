@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_check_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 20:55:01 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/18 19:17:12 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/22 21:56:46 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int open_close_files(t_pipes_part *pipe_part)
 
 int open_outfile(t_pipes_part *pipe_part, char *outfile, char *redir)
 {
-    if (pipe_part->fd[1])
+    if (pipe_part->fd[1] != -1)
         close(pipe_part->fd[1]);
     if (ft_strcmp(redir, ">") == 0)
         pipe_part->fd[1] = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -60,7 +60,7 @@ int open_outfile(t_pipes_part *pipe_part, char *outfile, char *redir)
 
 int open_infile(t_pipes_part *pipe_part, char *infile)
 {
-    if (pipe_part->fd[0])
+    if (pipe_part->fd[0] != -1)
         close(pipe_part->fd[0]);
     pipe_part->fd[0] = open(infile, O_RDONLY, 0644);
 	if (pipe_part->fd[0] < 0)
