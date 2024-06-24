@@ -6,6 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
+/*   Updated: 2024/06/24 11:16:24 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +53,9 @@ char	*replace_env_var(char *str, int i, t_begin_pipes *pipes_list)
 
 	name = get_env_name(str + i);
 	if (ft_strcmp(name, "?") == 0)
-	{
 		value = ft_itoa(pipes_list->sortie_error);
-		printf("value = %s\n", value);
-	}
 	else
-	{
 		value = get_env_value(pipes_list, name);
-	}
 	str[i - 1] = '\0';
 	while(is_valid_simple_envchar(str[i]))
 		i++;
@@ -81,7 +77,8 @@ char	*replace_env_vars(char *str, t_begin_pipes *pipes_list)
 	while(str && str[i])
 	{
 		in_quote = env_in_quote(str[i], in_quote);
-		if(str[i] == '$' && in_quote != '\'')
+		if(str[i] == '$' && in_quote != '\'' && str[i + 1]
+			&& is_valid_simple_envchar(str[i + 1]))
 			str = replace_env_var(str, i + 1, pipes_list);
 		i++;
 	}
