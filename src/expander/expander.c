@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:16:24 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:00:45 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*replace_env_var(char *str, int i, t_begin_pipes *pipes_list)
 	char	*new_str;
 
 	name = get_env_name(str + i);
+	printf("name = %s\n", name);
 	if (ft_strcmp(name, "?") == 0)
 		value = ft_itoa(pipes_list->sortie_error);
 	else

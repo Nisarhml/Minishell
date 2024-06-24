@@ -6,11 +6,12 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 14:43:35 by aguezzi           #+#    #+#             */
-/*   Updated: 2023/06/07 22:46:15 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:23:17 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <signal.h>
 
 char	*read_in_file(int fd, char *str, char *buffer)
 {
@@ -98,6 +99,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*str;
 
+	signal(SIGQUIT, SIG_IGN);
 	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer = ft_calloc(BUFFER_SIZE + 1, 1);

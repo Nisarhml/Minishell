@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/23 17:59:59 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:59:48 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		prompt_data = prompt_user_for_input();
-		if (!prompt_data)
-			break;
 		if (!prompt_data->input)
-		{
-			free(prompt_data);
-			printf("exit\n");
-			return (0);
-		}
+			return ( 0/*free_all(begin_list, pipes_list, prompt_data*/);
 		if (prompt_data->input[0] != '\0')
 		{
 			trimmed_str = trim_input(prompt_data->input);
@@ -79,6 +73,16 @@ int	main(int ac, char **av, char **env)
 	}
 	return (0);
 }
+
+/*int	free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_data)
+{
+	free(prompt_data);
+	//free_env_export(pipes_list);
+	free(begin_list);
+	free(pipes_list);
+	printf("exit\n");
+	//return (sig); ??
+}*/
 
 int	error_pipe_redir(t_begin *begin_list)
 {
