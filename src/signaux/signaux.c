@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signaux.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 16:01:26 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 10:44:40 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:02:03 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	set_here_doc_signals(void)
 	rl_redisplay();
 }
 
-void	ft_ctrl_sl(int i)
+void	ft_ctrl_sl(int i) // cette fonction ne sert a rien car le Ctrl+\ ne doit rien faire
 {
 	(void) i;
 	rl_on_new_line();
