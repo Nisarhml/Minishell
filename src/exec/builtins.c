@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:13:43 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 16:01:49 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/23 18:32:45 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int command_echo(t_pipes_part *pipe_part)
 	int i;
 	int saut;
 
-	if (pipe_part->args)
+	if (pipe_part->args[1])
 	{
 		i = 1;
 		saut = 1;

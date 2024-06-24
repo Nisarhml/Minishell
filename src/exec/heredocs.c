@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 16:14:36 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 21:46:20 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:16:31 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	heredoc(t_pipes_part *pipe_part, char *end, int count)
 	{
 		write(pipe_part->save_stdout, "> ", 2);
 		line = get_next_line(0);
-		if ((ft_strncmp(line, end, ft_strlen(end)) == 0
+        if (!line)
+            break;
+		else if ((ft_strncmp(line, end, ft_strlen(end)) == 0
 				&& ft_strlen(line) == ft_strlen(end) + 1)
 			&& line[0] != '\n')
         {
