@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 11:08:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/20 16:42:35 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:20:49 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ char	manage_quotes(char c, char in_quote)
 	return (in_quote);
 }
 
-static	char *extract_word(char *str, int *i)
+static char	*extract_word(char *str, int *i)
 {
-	char *substr;
-	char in_quote;
-	int start;
+	char	*substr;
+	char	in_quote;
+	int		start;
 
 	in_quote = 0;
 	start = *i;
@@ -77,56 +77,3 @@ char	*trim_input(char *str)
 	}
 	return (new_str);
 }
-
-
-/*char	*trim_input(char *str)
-{
-	int		start;
-	char	in_quote;
-	int		i;
-
-	i = 0;
-	start = 0;
-	while (str[i])
-	{
-		while (is_whitespace(str[i]))
-			i++;
-		in_quote = 0;
-		while (str[i] && (!is_whitespace(str[i]) || in_quote))
-		{
-			in_quote = manage_quotes(str[i], in_quote);
-			i++;
-		}
-		join_words(str, ft_substr(str, start, i - start));
-	}
-	return (str);
-}
-
-char	*join_words(char *str, char *new_str)
-{
-	char *tmp;
-	char *new_tmp;
-	int start;
-	int i;
-
-	i = 0;
-	start = 0;
-	tmp = NULL;
-	new_tmp = NULL;
-	if (start < i)
-	{
-		new_str = ft_substr(str, start, i - start);
-		if (!str)
-				str = new_str;
-		else
-		{
-			tmp = ft_strjoin(new_str, " ");
-			new_tmp = ft_strjoin(tmp, new_str);
-			free(tmp);
-			free(new_str);
-			free(str);
-			str = new_tmp;
-		}
-	}
-	return (str);
-}*/

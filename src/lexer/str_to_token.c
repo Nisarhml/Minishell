@@ -6,13 +6,13 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 09:37:00 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 11:44:51 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:19:44 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_token *split_string_into_tokens(char *str)
+t_token	*split_string_into_tokens(char *str)
 {
 	t_token	*lexer;
 	char	*word;
