@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:08:06 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:59:47 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ typedef enum {
 	PIPE,
 	WORD,
 } token_type;
-
-//extern int	g_last_status;
 
 typedef struct s_token {
 	char			*value;
