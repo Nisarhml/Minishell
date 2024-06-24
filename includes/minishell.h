@@ -6,6 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
+/*   Updated: 2024/06/24 11:08:06 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +40,7 @@ typedef enum {
 	WORD,
 } token_type;
 
-extern int	g_last_status;
+//extern int	g_last_status;
 
 typedef struct s_token {
 	char			*value;
@@ -211,21 +212,22 @@ int			is_valid_envchar(char c);
 int			is_valid_simple_envchar(char c);
 char		env_in_quote(char c, char in_quote);
 
-/*==============================DOLLARS_WHY.C================================*/
-
-//char	*expand_last_status(char *input);
-//char	*build_expanded(char *input, char *status_str);
-//void	replace_and_copy(char *dest, char *src, size_t n);
-//char	*find_position(char *input, char *status_str);
-//void	update_last_status(int status);
-
 /*==============================SIGNAUX.C====================================*/
 
 void	handle_prompt(void);
-void	ft_ctrl_c(int sig);
-void	ft_ctrl_d();
-void	ft_ctrl_sl(int i);
-void	rl_replace_line(const char *str, int i);
+//void	ft_ctrl_c(int sig);
+//void	ft_ctrl_d();
+//void	ft_ctrl_sl(int i);
+//void	rl_replace_line(const char *str, int i);
+int		*get_exit_status(void);
+void	set_exit_status(int status);
+void	basic_signal(int signal);
+void	command_signal(int signal);
+void	here_doc_signal(int signal);
+void	ignore_signals(void);
+void	set_basic_signals(void);
+void	set_command_signals(void);
+void	set_here_doc_signals(void);
 
 /*=======================PARSER_BUILTINS_EXEC================================*/
 

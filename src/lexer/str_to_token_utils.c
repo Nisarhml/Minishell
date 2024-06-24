@@ -6,13 +6,13 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 15:41:24 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/20 17:16:56 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:19:22 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	quotes_in_count_word(char *str, int i, char in_quote)
+static	int	quotes_in_count_word(char *str, int i, char in_quote)
 {
 	while (!ft_strchr("\0\"", str[i]) && in_quote == 1)
 		i++;
@@ -28,7 +28,7 @@ int	skip_spaces(char *str, int i)
 	return (i);
 }
 
-int count_words(char *str)
+int	count_words(char *str)
 {
 	int		i;
 	int		word_count;

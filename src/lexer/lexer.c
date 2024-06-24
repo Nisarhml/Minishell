@@ -6,11 +6,11 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:26:36 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 18:59:30 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:19:05 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h" //norm done !
+#include "../../includes/minishell.h"
 
 int	find_token_type(char *str)
 {

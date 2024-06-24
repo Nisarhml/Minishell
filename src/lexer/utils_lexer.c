@@ -6,11 +6,11 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:24:01 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/21 18:18:06 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:20:58 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h" //norm done !
+#include "../../includes/minishell.h"
 
 char	*mini_strcpy(char *dest, const char *src)
 {
