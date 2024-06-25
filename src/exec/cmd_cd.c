@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:16:16 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/24 19:09:59 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 18:22:28 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int command_cd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 			pipes_list->oldpwd = ft_strdup(pipes_list->pwd);
 			if (getcwd(pwd, sizeof(pwd)) != NULL)
 			{
-				printf("OKOK\n");
 				if (pipes_list->pwd)
 					free(pipes_list->pwd);
 				pipes_list->pwd = ft_strdup(pwd);

@@ -6,13 +6,13 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:00:42 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 21:53:17 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 23:31:26 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    begin_forks(t_begin_pipes *pipes_list, char **env)
+void    begin_forks(t_begin *begin_list, t_begin_pipes *pipes_list, char **env)
 {
     t_pipes_part    *pipe_part;
     int             i;
@@ -27,13 +27,13 @@ void    begin_forks(t_begin_pipes *pipes_list, char **env)
         pipes_list->pids[i] = fork();
         if (pipes_list->pids[i] == -1)
             ft_error("Miss create fork");
-        child_process(pipes_list, pipe_part, env, i);
+        child_process(begin_list, pipes_list, pipe_part, env, i);
         pipe_part = pipe_part->next;
         i++;
     }
 }
 
-void    child_process(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char **env, int i)
+void    child_process(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char **env, int i)
 {
     if (pipes_list->pids[i] == 0)
     {
@@ -52,7 +52,7 @@ void    child_process(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char *
             if (dup2(pipe_part->fd[1], STDOUT_FILENO) == -1)
                 printf("error de dup2 avec fd = %d en STDOUT\n", pipe_part->fd[1]);
         }
-        if (builtins(pipes_list, pipe_part))
+        if (builtins(begin_list, pipes_list, pipe_part))
             exit (0);
         execve(pipe_part->path_cmd, pipe_part->args, env);
     }
@@ -61,11 +61,20 @@ void    child_process(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char *
 void	wait_childs(t_begin_pipes *pipes_list)
 {
 	int	i;
+    int status;
 
 	i = 0;
 	while (i < pipes_list->nb_pipes + 1)
 	{
-		waitpid(pipes_list->pids[i], NULL, 0);
+		waitpid(pipes_list->pids[i], &status, 0);
+        if (WIFEXITED(status)) {
+            set_exit_status(WEXITSTATUS(status));
+        } else if (WIFSIGNALED(status)) {
+            set_exit_status(128 + WTERMSIG(status));
+        } else {
+            printf("OKOK\n");
+            set_exit_status(127); // Valeur par défaut pour les autres cas
+        }
 		i++;
 	}
 }

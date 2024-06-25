@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 10:32:04 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 00:22:32 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_token {
 	char			*value;
 	token_type		token;
 	struct s_token	*next;
-	struct s_token	*prev;
 } t_token;
 
 typedef struct s_token_data
@@ -143,8 +142,10 @@ typedef struct s_begin_pipes
     t_var_env       *env_free;
     t_var_export    *export_free;
     int             sortie_error;
+    int             nb_mots;
     int             _stdout;
     int             _stdin;
+    char            *val_dollr;
 }   t_begin_pipes;
 
 /*===============================PROMPT======================================*/
@@ -238,24 +239,24 @@ void	ignore_signals(void);
 
 
 // creation de ma liste de base envoye par le lexer + creation de ma liste de tranches de pipe
-void    affich_list(t_begin *begin_list);
-void    create_tokens(t_begin *begin_list, char **argv);
-void    create_mots(char **argv);
+int	    sp(char *input);
 void    init_pipes_list(t_begin_pipes *pipes_list, char **env);
-void    affich_pipes_list(t_begin_pipes *pipes_list);
 void    create_pipes_list(t_begin *begin_list, t_begin_pipes *pipes_list);
+//void    bloc1_pip_list(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, t_token *token, t_token *ref_token, int i);
+//void    bloc2_pip_list(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, t_token *ref_token, int i);
 
 // check error for pipes and redir
 int		error_pipe_redir(t_begin *begin);
+int     bloc1_err(t_token *current);
+int     bloc2_err(t_token *current);
 void    ft_error(char *s);
 
 // check tokens
 void    check_infile_part(t_begin_pipes *pipes_list);
 void    check_outfile_part(t_begin_pipes *pipes_list);
-void    affich_infiles_outfiles(t_begin_pipes *pipes_list);
 void    check_cmds_args(t_begin_pipes *pipes_list);
+void    check_if_redir(t_pipes_part *pipe_part, int *nb_arg, int *i);
 void    create_part_args(t_pipes_part *pipe_part);
-void    affich_cmds_args(t_begin_pipes *pipes_list);
 
 // handle heredocs, files and check errors
 void    create_heredocs(t_begin_pipes *pipes_list);
@@ -269,14 +270,16 @@ void    create_export(t_begin_pipes *pipes_list, char **env);
 void    determine_name_value(t_begin_pipes *pipes_list);
 void	check_args_export(t_begin_pipes *pipes_list, char **args);
 void	add_arg_export(t_begin_pipes *pipes_list, char *arg);
-int     same_name(t_var_export *ref, char *name, char *arg, char *value);
-void	add_in_export(t_begin_pipes *pipes_list, char *arg, char *name, char *value);
+int     same_name(t_var_export *ref, char *name, char *arg);
+void	add_in_export(t_begin_pipes *pipes_list, char *arg, char *name);
 int     cond(t_begin_pipes *pipes_list, t_var_export *ref,\
 		 t_var_export *new, char *name);
 void    affich_export_list(t_begin_pipes *pipes_list);
 void    build_env(t_begin_pipes *pipes_list, char **env);
+void    b_env(t_begin_pipes *p, t_var_env *var, t_var_env *ref, char **e, int i);
 void    affich_env_list(t_begin_pipes *pipes_list);
 void	modify_var_env(t_begin_pipes *pipes_list, char *variable, char *name);
+int	    b_modify_var_env(t_var_env *var, char *variable, char *name);
 void	add_in_env(t_begin_pipes *pipes_list, char *variable, char *name);
 
 // Paths
@@ -285,21 +288,20 @@ char	*search_the_path(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 void	specific_error(char *cmd);
 
 // FORK part
-void    begin_forks(t_begin_pipes *pipes_list, char **env);
-void    child_process(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char **env, int i);
+void    begin_forks(t_begin *begin_list, t_begin_pipes *pipes_list, char **env);
+void    child_process(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part, char **env, int i);
 int     open_close_files(t_pipes_part *pipe_part);
-void    affich_fd_pipes(t_begin_pipes *pipes_list); // debuggage
 void    create_pipes(t_begin_pipes *pipes_list);
 void    define_infile_outfile(t_begin_pipes *pipes_list, t_pipes_part *pipe_part, int i);
 int     last_heredoc(t_pipes_part *pipe_part);
 void    close_pipes_child(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 void    close_pipes_parent(t_begin_pipes *pipes_list);
 void	wait_childs(t_begin_pipes *pipes_list);
-void    exec_no_pipe(t_begin_pipes *pipes_list, char **env);
+void    exec_no_pipe(t_begin *begin_list, t_begin_pipes *pipes_list, char **env);
 int     prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 
 // builtins
-int	    builtins(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+int	    builtins(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int     command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int     command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 int     command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
@@ -314,7 +316,10 @@ void	change_oldpwd_path(t_begin_pipes *pipes_list, char *path);
 void	change_pwd_path(t_begin_pipes *pipes_list, char *path);
 void	modify_env(t_var_env *var_env, char *wd, char *path);
 void	modify_export(t_var_export *var_export, char *wd, char *path);
-int     command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+int     command_exit(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+void    bloc_2_exit(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+void    bloc_3_exit(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
+void    free_exit(t_begin *begin_list, t_begin_pipes *pipes_list);
 
 // Fonctions pour la partie exec_builtins
 void    parser_exec(t_begin *begin_list, t_begin_pipes *pipes_list, char **env);
@@ -324,6 +329,7 @@ void	free_args_words(t_pipes_part *pipe_part);
 
 // fonctions de free et cas speciaux
 int	    free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_data);
+void	free_list(t_begin *begin_list);
 void	free_env_export(t_begin_pipes *pipes_list);
 int	    special_chr_prompt(t_prompt *prompt_data, char *input);
 

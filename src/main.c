@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 10:51:40 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:07:11 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,37 +42,60 @@ int	main(int ac, char **av, char **env)
 			return (free_all(begin_list, pipes_list, prompt_data));
 		if (special_chr_prompt(prompt_data, prompt_data->input))
 			continue;
-		if (prompt_data->input[0] != '\0')
+		if (prompt_data->input[0] != '\0' && sp(prompt_data->input))
 		{
 			trimmed_str = trim_input(prompt_data->input);
 			if (unclosed_quotes(trimmed_str))
 			{
 				free(trimmed_str);
-				//free(prompt_data->input); check if it's needed to free
 				free(prompt_data);
-				continue; // Revenir au prompt
+				continue;
 			}
 			token_list = tokenize_and_process(trimmed_str, pipes_list);
 			begin_list->first = token_list;
-			//printf("\nliste de mots : \n\n");
-			affich_list(begin_list);
-			//printf("\n\n");
 			if (error_pipe_redir(begin_list))
 			{
 				free(trimmed_str);
-				//free(prompt_data->input);
 				free(prompt_data);
-				continue; // Revenir au prompt
+				free_lexer(&token_list);
+				continue;
 			}
 			parser_exec(begin_list, pipes_list, env);
 			reinit_exec(pipes_list);
-			//free_lexer(&token_list);
+			free_list(begin_list);
 			free(trimmed_str);
 			token_list = NULL;
 		}
+		free(prompt_data->input);
 		free(prompt_data);
 	}
 	return (0);
+}
+
+int	sp(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] == ' ')
+		i++;
+	if (!input[i])
+		return (0);
+	return (1);
+}
+
+void	free_list(t_begin *begin_list)
+{
+	t_token		*tofree;
+	t_token		*save;
+	
+	tofree = begin_list->first;
+	while (tofree)
+	{
+		save = tofree;
+		tofree = tofree->next;
+		free(save);
+	}
 }
 
 int	special_chr_prompt(t_prompt *prompt_data, char *input)
@@ -98,10 +121,12 @@ int	free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_da
 	free(pipes_list->export_list);
 	free(pipes_list->pwd);
 	free(pipes_list->oldpwd);
+	if (pipes_list->val_dollr)
+		free(pipes_list->val_dollr);
 	free(begin_list);
 	free(pipes_list);
 	printf("exit\n");
-	return (0);  // ici je dois return la valeur du signal d'erreur
+	return (0);
 }
 
 void	free_env_export(t_begin_pipes *pipes_list)
@@ -133,62 +158,15 @@ void	free_env_export(t_begin_pipes *pipes_list)
 	}
 }
 
-int	error_pipe_redir(t_begin *begin_list)
-{
-	t_token	*current;
-
-	current = begin_list->first;
-	if (current->value[0] == '|')
-	{
-		printf("syntax error near unexpected token `|'\n");
-		return (1);
-	}
-	while (current)
-	{
-		if (ft_strcmp(current->value, "||") == 0)
-		{
-			printf("syntax error near unexpected token `|'\n");
-			return (1);
-		}
-		if (current->token == 4)
-		{
-			if (current->next)
-			{
-				if (current->next->token == 4)
-				{
-					printf("syntax error near unexpected token ");
-					printf("`%c`\n", current->next->value[0]);
-					return (1);
-				}
-			}
-		}
-		if (current->token == 0 || current->token == 1
-			|| current->token == 2 || current->token == 3)
-		{
-			if (current->next)
-			{
-				if (current->next->token != 5)
-				{
-					printf("syntax error near unexpected token ");
-					printf("`%c`\n", current->next->value[0]);
-					return (1);
-				}
-			}
-			else
-			{
-				printf("syntax error near unexpected token `newline`\n");
-				return (1);
-			}
-		}
-		current = current->next;
-	}
-	return (0);
-}
-
 void	reinit_exec(t_begin_pipes *pipes_list)
 {
 	t_pipes_part	*pipe_part;
 
+	if (pipes_list->val_dollr)
+	{
+		free(pipes_list->val_dollr);
+		pipes_list->val_dollr = NULL;
+	}
 	pipe_part = pipes_list->first;
 	free_args_words(pipe_part);
 	pipe_part = pipes_list->first;
@@ -271,25 +249,4 @@ t_prompt	*prompt_user_for_input(void)
 	 if (prompt_data->input && *prompt_data->input)
 	 	add_history(prompt_data->input);
 	return (prompt_data);
-}
-void print_token_list(t_token *elem)
-{
-	//int i;
-	t_token *current;
-
-	current = elem;
-	//i = 1;
-	while (current)
-	{
-		printf("%s\n", current->value);
-		printf("Type: %d\n\n", current->token);
-		/*printf("Element %d\n", i++);
-		printf("========\n");
-		printf("%s\n", current->value);
-		printf("Type: %d\n", current->token);
-		printf("========\n");
-		printf("next\n");
-		printf("========\n");*/
-		current = current->next;
-	}
 }

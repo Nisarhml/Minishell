@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:21:59 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 21:54:16 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 23:32:30 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,27 @@
 
 void    parser_exec(t_begin *begin_list, t_begin_pipes *pipes_list, char **env)
 {
-    //printf("\nliste de mots : \n\n");
-    affich_list(begin_list); // --> permet d'afficher tous les char* de mes tokens
-    create_pipes_list(begin_list, pipes_list); // --> je cree une liste chainee dans laquelle chaque element correspondra a une tranche de pipes
-    //printf("\n ---\n\nliste de tranches de pipe : \n\n");
-    affich_pipes_list(pipes_list);
-    //affich_env_list(pipes_list);
-    //affich_export_list(pipes_list);
+    create_pipes_list(begin_list, pipes_list);
     check_infile_part(pipes_list);
     check_outfile_part(pipes_list);
-    //printf("\n ---\n\naffichage des infiles et outfiles : \n\n");
-    affich_infiles_outfiles(pipes_list);
     check_cmds_args(pipes_list);
-    //printf("\naffichage des cmds et args : \n\n");
-    affich_cmds_args(pipes_list);
-    //printf("Reaffichage liste : \n\n");
-    affich_pipes_list(pipes_list);
     create_heredocs(pipes_list);
-    //read_heredoc(pipes_list);
     pipes_list->path_env = find_path(pipes_list);
     pipes_list->cmd_paths = ft_split(pipes_list->path_env, ':');
     create_pipes(pipes_list);
     if (pipes_list->nb_pipes >= 1)
     {
-        //affich_fd_pipes(pipes_list);
-        begin_forks(pipes_list, env);
+        begin_forks(begin_list, pipes_list, env);
         close_pipes_parent(pipes_list);
         wait_childs(pipes_list);
     }
-    else  // ici j'ai qu'un seul pipe_part
-    {
-        exec_no_pipe(pipes_list, env);
-    }
+    else
+        exec_no_pipe(begin_list, pipes_list, env);
     dup2(pipes_list->_stdin, STDIN_FILENO);
     dup2(pipes_list->_stdout, STDOUT_FILENO);
-    // vu qu'on sera dans une boucle infinie, il faudra free tout ce qui a ete malloc avant de rentrer de lire et remalloc de nouvelles donnees
 }
 
-void    exec_no_pipe(t_begin_pipes *pipes_list, char **env)
+void    exec_no_pipe(t_begin *begin_list, t_begin_pipes *pipes_list, char **env)
 {
     t_pipes_part    *pipe_part;
     char            *cmd;
@@ -69,9 +52,9 @@ void    exec_no_pipe(t_begin_pipes *pipes_list, char **env)
             ret = prepa_builtin_solo(pipes_list, pipe_part);
         if (ret)
         {
-            if (!builtins(pipes_list, pipe_part))
+            if (!builtins(begin_list, pipes_list, pipe_part))
             {
-                begin_forks(pipes_list, env);
+                begin_forks(begin_list, pipes_list, env);
                 close_pipes_parent(pipes_list);
                 wait_childs(pipes_list);
             }
@@ -108,54 +91,6 @@ int prepa_builtin_solo(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
     return (1);
 }
 
-void    affich_env_list(t_begin_pipes *pipes_list)
-{
-    t_var_env   *var;
-
-    var = pipes_list->env_list->first;
-    while (var)
-    {
-        printf("%s\n", var->variable);
-        var = var->next;
-    }
-}
-
-void    build_env(t_begin_pipes *pipes_list, char **env) // pour l'export et unset, il faut reflechir a comment modifier correctement l'env
-{
-    t_var_env   *var;
-    t_var_env   *ref;
-    int         i;
-
-    pipes_list->env_list = malloc(sizeof(t_begin_env));
-    if (!pipes_list->env_list)
-        exit (1);
-    pipes_list->env_list->first = NULL;
-    i = 0;
-    while (env[i])
-    {
-        var = malloc(sizeof(*var));
-        if (!var)
-            exit (1);
-        var->variable = ft_strdup(env[i]);
-        var->name = ft_strdup(var->variable);
-        var->name[ft_strchr(var->name, '=') - var->name] = '\0';
-        var->value = ft_strdup(var->variable);
-        var->tmp_value = var->value;
-        var->value += ft_strchr(var->value, '=') - var->value + 1;
-        var->next = NULL;
-        if (i == 0)
-            pipes_list->env_list->first = var;
-        else
-        {
-            ref = pipes_list->env_list->first;
-            while (ref->next)
-                ref = ref->next;
-            ref->next = var;
-        }
-        i++;
-    }
-}
-
 void    close_pipes_parent(t_begin_pipes *pipes_list)
 {
     t_pipes_part    *pipe_part;
@@ -177,18 +112,6 @@ void    close_pipes_parent(t_begin_pipes *pipes_list)
             i++;
         }
         pipe_part = pipe_part->next;
-    }
-}
-
-void    affich_fd_pipes(t_begin_pipes *pipes_list)
-{
-    int i;
-
-    i = 0;
-    while (i < pipes_list->nb_pipes * 2)
-    {
-        printf("pipe_fd = %d ", pipes_list->p[i]);
-        i++;
     }
 }
 

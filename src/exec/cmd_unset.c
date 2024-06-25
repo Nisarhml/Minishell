@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:17:27 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 16:00:16 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 19:10:49 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 		if (pipe_part->args[1][0] == '-')
 		{
 			printf("unset: No options\n");
+			set_exit_status(2);
 			return (1);
 		}
 		i = 1;
@@ -32,6 +33,7 @@ int command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 			i++;
 		}
 	}
+	set_exit_status(0);
 	return (1);
 }
 

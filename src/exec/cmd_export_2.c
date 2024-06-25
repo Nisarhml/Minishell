@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:35:47 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/24 19:32:30 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 20:33:45 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,37 @@ void modify_var_env(t_begin_pipes *pipes_list, char *variable, char *name)
 			return ;
 		var = malloc(sizeof(t_var_env));
 		var->variable = ft_strdup(variable);
+		var->tmp_value = ft_strdup(variable);
+		var->value = ft_strchr(variable, '=') + 1;
 		var->name = ft_strdup(name);
 		var->next = NULL;
 		return;
 	}
 	while (var)
 	{
-		if (ft_strcmp(name, var->name) == 0)
-		{
-			free(var->variable);
-			var->variable = ft_strdup(variable);
+		if (b_modify_var_env(var, variable, name))
 			break;
-		}
 		var = var->next;
 	}
 	if (!var && ft_strchr(variable, '='))
 		add_in_env(pipes_list, variable, name);
+}
+
+int	b_modify_var_env(t_var_env *var, char *variable, char *name)
+{
+	if (ft_strcmp(name, var->name) == 0)
+	{
+		if (ft_strchr(variable, '='))
+		{
+			free(var->variable);
+			var->variable = ft_strdup(variable);
+			free(var->tmp_value);
+			var->tmp_value = ft_strdup(variable);
+			var->value = ft_strchr(var->tmp_value, '=') + 1;
+		}
+		return (1);
+	}
+	return (0);
 }
 
 void add_in_env(t_begin_pipes *pipes_list, char *variable, char *name)
@@ -50,6 +65,8 @@ void add_in_env(t_begin_pipes *pipes_list, char *variable, char *name)
 	if (!new)
 		exit(1);
 	new->variable = ft_strdup(variable);
+	new->tmp_value = ft_strdup(variable);
+	new->value = ft_strchr(new->tmp_value, '=') + 1;
 	new->name = ft_strdup(name);
 	new->next = NULL;
 	var = pipes_list->env_list->first;
@@ -58,7 +75,7 @@ void add_in_env(t_begin_pipes *pipes_list, char *variable, char *name)
 	var->next = new;
 }
 
-void add_in_export(t_begin_pipes *pipes_list, char *arg, char *name, char *value)
+void add_in_export(t_begin_pipes *pipes_list, char *arg, char *name)
 {
 	t_var_export *ref;
 	t_var_export *new;
@@ -67,8 +84,12 @@ void add_in_export(t_begin_pipes *pipes_list, char *arg, char *name, char *value
 	if (!new)
 		exit(1);
 	new->variable = ft_strdup(arg);
+	new->tmp_value = ft_strdup(arg);
 	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
+	if (ft_strchr(new->tmp_value, '='))
+		new->value = ft_strchr(new->tmp_value, '=') + 1;
+	else
+		new->value = NULL;
 	ref = pipes_list->export_list->first;
 	if (cond(pipes_list, ref, new, name))
         return ;

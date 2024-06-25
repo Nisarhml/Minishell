@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:44:38 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/24 19:28:14 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 00:27:21 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,5 @@ void    affich_export_list(t_begin_pipes *pipes_list)
             printf("declare -x %s\n", var->name);
         var = var->next;
     }
-	/*printf("\n------\n\n");
-	var = pipes_list->export_list->first;
-    while (var)
-    {
-        printf("n = %s / v = %s\n", var->name, var->value);
-        var = var->next;
-    }*/
+    set_exit_status(0);
 }

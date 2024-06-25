@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:26:36 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:19:05 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:32:32 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	add_word(t_token **lexer, char *str, int token)
 	new_node->value = str;
 	new_node->token = token;
 	new_node->next = NULL;
-	new_node->prev = NULL;
 	if (!*lexer)
 		*lexer = new_node;
 	else

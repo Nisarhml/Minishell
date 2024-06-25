@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 13:38:58 by aguezzi           #+#    #+#             */
-/*   Updated: 2022/11/15 14:10:18 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 19:56:14 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while (*s != 0)
 	{
 		if (*s == c % 256)
@@ -28,5 +30,5 @@ char	*ft_strchr(const char *s, int c)
 	}
 	if (c % 256 == 0)
 		return ((char *)s);
-	return (0);
+	return (NULL);
 }

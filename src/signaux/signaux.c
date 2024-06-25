@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signaux.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 16:01:26 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 10:29:24 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 13:45:31 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	basic_signal(int signal)
 {
+	(void)signal;
 	set_exit_status(128 + 2);
 	printf("\n");
 	rl_on_new_line();

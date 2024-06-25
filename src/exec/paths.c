@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 23:59:28 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/19 12:47:25 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:19:55 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*search_the_path(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 	char	*path_cmd;
 
 	i = 0;
+	if (ft_strcmp(pipe_part->cmd, "exit") == 0)
+		return (0);
 	if (access(pipe_part->cmd, X_OK) == 0)
 		return (pipe_part->cmd);
 	while (pipes_list->cmd_paths[i])
