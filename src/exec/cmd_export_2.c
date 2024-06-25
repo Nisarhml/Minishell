@@ -6,13 +6,13 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:35:47 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/21 17:39:01 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/24 19:32:30 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void modify_env(t_begin_pipes *pipes_list, char *variable, char *name)
+void modify_var_env(t_begin_pipes *pipes_list, char *variable, char *name)
 {
 	t_var_env *var;
 

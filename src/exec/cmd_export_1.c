@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:16:04 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/22 15:36:04 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:31:54 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void add_arg_export(t_begin_pipes *pipes_list, char *arg) // (tenter de reussir 
 	printf("name = %s\n", name);   // regler ici le PROBLEME du free de name
 	if (!ref)
 		add_in_export(pipes_list, arg, name, value);
-	modify_env(pipes_list, arg, name);
+	modify_var_env(pipes_list, arg, name);
 }
 
 int same_name(t_var_export *ref, char *name, char *arg, char *value)
@@ -89,8 +89,9 @@ int same_name(t_var_export *ref, char *name, char *arg, char *value)
     if (ft_strcmp(ref->name, name) == 0)
     {
         free(ref->variable);
-        free(ref->value);
-        ref->variable = arg;
+        free(ref->tmp_value);
+		ref->tmp_value = ft_strdup(arg);
+        ref->variable = ft_strdup(arg);
         ref->value = value;
         return (1);
     }

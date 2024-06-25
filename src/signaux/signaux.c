@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 16:01:26 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 15:02:03 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:15:02 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,13 @@ void	set_exit_status(int status)
 	*get_exit_status() = status;
 }
 
-void	basic_signal(int signal)
+void	basic_signal()
 {
-	if (signal == SIGINT)
-	{
-		set_exit_status(128 + 2);
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
+	set_exit_status(128 + 2);
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	command_signal(int signal)
@@ -74,7 +66,7 @@ void	ignore_signals(void)
 void	set_basic_signals(void)
 {
 	signal(SIGINT, basic_signal);
-	signal(SIGQUIT, basic_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	set_command_signals(void)
