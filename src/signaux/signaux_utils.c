@@ -1,36 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   signaux_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/03 14:12:45 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 10:16:48 by nihamila         ###   ########.fr       */
+/*   Created: 2024/06/25 10:25:02 by nihamila          #+#    #+#             */
+/*   Updated: 2024/06/25 10:32:34 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_token(char c)
+int	*get_exit_status(void)
 {
-	return (c == '|' || c == '<' || c == '>');
+	static int	exit_status;
+
+	return (&exit_status);
 }
 
-int	is_whitespace(char c)
+void	set_exit_status(int status)
 {
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r');
+	*get_exit_status() = status;
 }
 
-char	*ft_strjoin_free(char *s1, char *s2, int to_free)
+void	set_here_doc_signals(void)
 {
-	char	*result;
+	signal(SIGINT, here_doc_signal);
+}
 
-	result = ft_strjoin(s1, s2);
-	if (to_free == 1 || to_free == 3)
-		free(s1);
-	if (to_free == 2 || to_free == 3)
-		free(s2);
-	return (result);
+void	here_doc_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		set_exit_status(1);
+		printf("\n");
+		exit(*get_exit_status());
+	}
+}
+
+void	ignore_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

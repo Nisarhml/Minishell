@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:57:14 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:20:07 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 09:46:23 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ void	free_lexer(t_token **lexer)
 		free(tmp->value);
 		free(tmp);
 	}
-	lexer = NULL;
+	*lexer = NULL;
 }
