@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:08:06 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:32:04 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,21 @@ typedef enum {
 	WORD,
 } token_type;
 
-//extern int	g_last_status;
-
 typedef struct s_token {
 	char			*value;
 	token_type		token;
 	struct s_token	*next;
 	struct s_token	*prev;
 } t_token;
+
+typedef struct s_token_data
+{
+	char **word;
+	t_token **lexer;
+	int *j;
+	char *str;
+	int *i;
+} t_token_data;
 
 typedef struct s_prompt {
 	char *input;
@@ -215,19 +222,17 @@ char		env_in_quote(char c, char in_quote);
 /*==============================SIGNAUX.C====================================*/
 
 void	handle_prompt(void);
-//void	ft_ctrl_c(int sig);
-//void	ft_ctrl_d();
-//void	ft_ctrl_sl(int i);
-//void	rl_replace_line(const char *str, int i);
-int		*get_exit_status(void);
-void	set_exit_status(int status);
 void	basic_signal(int signal);
 void	command_signal(int signal);
-void	here_doc_signal(int signal);
-void	ignore_signals(void);
 void	set_basic_signals(void);
 void	set_command_signals(void);
+/*==========================SIGNAUX_UTILS.C==================================*/
+
+int		*get_exit_status(void);
+void	set_exit_status(int status);
+void	here_doc_signal(int signal);
 void	set_here_doc_signals(void);
+void	ignore_signals(void);
 
 /*=======================PARSER_BUILTINS_EXEC================================*/
 
