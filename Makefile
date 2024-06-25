@@ -6,7 +6,7 @@
 #    By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/24 16:33:46 by aguezzi           #+#    #+#              #
-#    Updated: 2024/06/24 16:11:30 by nihamila         ###   ########.fr        #
+#    Updated: 2024/06/25 11:23:25 by nihamila         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ src =	src/main.c\
 		src/lexer/str_to_token_utils.c\
 		src/lexer/trim_input.c\
 		src/signaux/signaux.c\
+		src/signaux/signaux_utils.c\
 		src/expander/expander.c\
 		src/expander/expander_utils.c\
 		src/exec/minishell.c src/exec/create_lists.c src/exec/tokens_error.c src/exec/cmds_args.c \
@@ -68,11 +69,11 @@ BLINK = \033[6m
 
 ORANGE = \033[38;5;216m
 DARKBLUE = \033[38;5;21m
-RED = \033[38;5;130m
+RED = \033[38;5;128m
 GREEN = \033[38;5;85m
 
 FICH_COUNT = 0
-NBR_TOT_FICHIER = 25
+NBR_TOT_FICHIER = $(words $(src))
 NBR_COMPILER = ${shell expr 100 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
 BAR =  ${shell expr 25 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
 
@@ -81,8 +82,10 @@ all: $(BUILD_PATHS) $(NAME)
 define compile_template
 	@$(eval FICH_COUNT = $(shell expr $(FICH_COUNT) + 1))
 	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
-	@NBR_COMPILER=$$(expr 100 \* $(FICH_COUNT) / $(NBR_TOT_FICHIER))
-	@BAR=$$(expr 25 \* $(FICH_COUNT) / $(NBR_TOT_FICHIER))
+	@NBR_COMPILER=$$(expr 100 \* $(FICH_COUNT) / $(NBR_TOT_FICHIER)); \
+	BAR=$$(expr 25 \* $(FICH_COUNT) / $(NBR_TOT_FICHIER)); \
+	BARS=$$(printf "\033[1;32m%0.s█" $$(seq 1 $$BAR)); \
+	echo " Compiling $$BARS$$SPACES ($$NBR_COMPILER%)\r\c"
 endef
 
 $(PATHO)%.o: $(PATHS)%.c | $(PATHO)
@@ -110,8 +113,7 @@ $(NAME): $(LIBFT) $(OBJS) $(HEADER)
 	@$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(READLINE_LIB) -o $(NAME)
 	@echo ""
 	@echo " ${GRAS}${RED}-> COMPILATION TERMINEE${RESET}${GRAS}${GREEN}[MINISHELL]${RESET}"
-	@printf " ${RED}${GRAS}[${GREEN}%-23.${BAR}s${RED}] [%d/%d (%d%%)]${RESET}" "-----------------------" ${FICH_COUNT} ${NBR_TOT_FICHIER} ${NBR_COMPILER}
-	@echo "\n  ${GRAS}${GREEN}                                            "
+	@echo "\n  ${GRAS}${GREEN}                                              "
 	@echo "   __  __ _____ _   _ _____  _____ _    _ ______ _      _      "
 	@echo "  |  \/  |_   _| \ | |_   _|/ ____| |  | |  ____| |    | |     "
 	@echo "  | \  / | | | |  \| | | | | (___ | |__| | |__  | |    | |     "
@@ -120,7 +122,6 @@ $(NAME): $(LIBFT) $(OBJS) $(HEADER)
 	@echo "  |_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|"
 	@echo "                                                               "
 	@echo "\n${RESET}                                                     "
-#@echo "${UP}${UP}${UP}"
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTP)

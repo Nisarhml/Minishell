@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:24:01 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:20:58 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:18:14 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*mini_strcpy(char *dest, const char *src)
 
 char	*mini_strstr(char *str, char *to_find)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (str[i] != '\0')

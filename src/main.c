@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 16:27:47 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:51:40 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int ac, char **av, char **env)
 			//free_lexer(&token_list);
 			free(trimmed_str);
 			token_list = NULL;
-			//free(prompt_data->input); check if it's needed to free
+			//free(prompt_data->input);
 			free(prompt_data);
 		}
 	}
@@ -219,7 +219,8 @@ t_prompt	*prompt_user_for_input(void)
 	if (!prompt_data)
 		return (NULL);
 	prompt_data->input = readline("MINISHELL <{0_0}> $> ");
-	add_history(prompt_data->input);
+	 if (prompt_data->input && *prompt_data->input)
+	 	add_history(prompt_data->input);
 	return (prompt_data);
 }
 void print_token_list(t_token *elem)

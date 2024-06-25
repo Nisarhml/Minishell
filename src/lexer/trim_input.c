@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 11:08:43 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/24 11:20:49 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:17:45 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static char	*extract_word(char *str, int *i)
 
 char	*join_words(char *str, char *new_str)
 {
-	char *tmp;
-	char *new_tmp;
+	char	*tmp;
+	char	*new_tmp;
 
 	if (!str)
 		return (new_str);
@@ -58,9 +58,9 @@ char	*join_words(char *str, char *new_str)
 
 char	*trim_input(char *str)
 {
-	char *new_str;
-	char *substr;
-	int i;
+	char	*new_str;
+	char	*substr;
+	int		i;
 
 	i = 0;
 	new_str = NULL;
@@ -68,7 +68,7 @@ char	*trim_input(char *str)
 	{
 		i = skip_spaces(str, i);
 		if (str[i] == '\0')
-			break;
+			break ;
 		substr = extract_word(str, &i);
 		if (substr && *substr)
 			new_str = join_words(new_str, substr);
