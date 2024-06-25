@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   str_to_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 09:37:00 by nihamila          #+#    #+#             */
 /*   Updated: 2024/06/25 10:16:19 by nihamila         ###   ########.fr       */

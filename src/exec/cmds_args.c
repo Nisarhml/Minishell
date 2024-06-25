@@ -6,7 +6,7 @@
 /*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:20:17 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/24 13:14:32 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/24 20:20:44 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void    check_cmds_args(t_begin_pipes *pipes_list)
     int             i;
     
     pipe_part = pipes_list->first;
-    pipe_part->nb_arg = 0;
     while (pipe_part)
     {
         i = 0;
+        pipe_part->nb_arg = 0;
         while (pipe_part->words[i])
         {
             if (ft_strcmp(pipe_part->words[i], ">") != 0

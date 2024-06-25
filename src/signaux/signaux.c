@@ -12,21 +12,14 @@
 
 #include "../../includes/minishell.h"
 
+
 void	basic_signal(int signal)
 {
-	if (signal == SIGINT)
-	{
-		set_exit_status(128 + 2);
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
+	set_exit_status(128 + 2);
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	command_signal(int signal)
@@ -47,7 +40,7 @@ void	command_signal(int signal)
 void	set_basic_signals(void)
 {
 	signal(SIGINT, basic_signal);
-	signal(SIGQUIT, basic_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	set_command_signals(void)

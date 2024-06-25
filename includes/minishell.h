@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:35:43 by nihamila          #+#    #+#             */
 /*   Updated: 2024/06/25 10:32:04 by nihamila         ###   ########.fr       */
@@ -276,7 +276,7 @@ int     cond(t_begin_pipes *pipes_list, t_var_export *ref,\
 void    affich_export_list(t_begin_pipes *pipes_list);
 void    build_env(t_begin_pipes *pipes_list, char **env);
 void    affich_env_list(t_begin_pipes *pipes_list);
-void	modify_env(t_begin_pipes *pipes_list, char *variable, char *name);
+void	modify_var_env(t_begin_pipes *pipes_list, char *variable, char *name);
 void	add_in_env(t_begin_pipes *pipes_list, char *variable, char *name);
 
 // Paths
@@ -310,10 +310,10 @@ void	delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, char *name);
 int	    command_echo(t_pipes_part *pipe_part);
 void	loop_flag_echo(char **args, int *i);
 int	    command_cd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
-void	modify_pwd_oldpwd(t_begin_pipes *pipes_list, char *path);
 void	change_oldpwd_path(t_begin_pipes *pipes_list, char *path);
 void	change_pwd_path(t_begin_pipes *pipes_list, char *path);
-void	check_relatif_path(t_begin_pipes *pipes_list, char *path);
+void	modify_env(t_var_env *var_env, char *wd, char *path);
+void	modify_export(t_var_export *var_export, char *wd, char *path);
 int     command_exit(t_begin_pipes *pipes_list, t_pipes_part *pipe_part);
 
 // Fonctions pour la partie exec_builtins
@@ -321,5 +321,10 @@ void    parser_exec(t_begin *begin_list, t_begin_pipes *pipes_list, char **env);
 void	reinit_exec(t_begin_pipes *pipes_list);
 void	free_pipes_list(t_begin_pipes *pipes_list);
 void	free_args_words(t_pipes_part *pipe_part);
+
+// fonctions de free et cas speciaux
+int	    free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_data);
+void	free_env_export(t_begin_pipes *pipes_list);
+int	    special_chr_prompt(t_prompt *prompt_data, char *input);
 
 #endif

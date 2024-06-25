@@ -39,7 +39,9 @@ int	main(int ac, char **av, char **env)
 	{
 		prompt_data = prompt_user_for_input();
 		if (!prompt_data->input)
-			return ( 0/*free_all(begin_list, pipes_list, prompt_data*/);
+			return (free_all(begin_list, pipes_list, prompt_data));
+		if (special_chr_prompt(prompt_data, prompt_data->input))
+			continue;
 		if (prompt_data->input[0] != '\0')
 		{
 			trimmed_str = trim_input(prompt_data->input);
@@ -58,7 +60,7 @@ int	main(int ac, char **av, char **env)
 			if (error_pipe_redir(begin_list))
 			{
 				free(trimmed_str);
-				free(prompt_data->input);
+				//free(prompt_data->input);
 				free(prompt_data);
 				continue; // Revenir au prompt
 			}
@@ -67,22 +69,69 @@ int	main(int ac, char **av, char **env)
 			//free_lexer(&token_list);
 			free(trimmed_str);
 			token_list = NULL;
-			//free(prompt_data->input);
-			free(prompt_data);
 		}
+		free(prompt_data);
 	}
 	return (0);
 }
 
-/*int	free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_data)
+int	special_chr_prompt(t_prompt *prompt_data, char *input)
+{
+	if (ft_strcmp(input, ".") == 0 || ft_strcmp(input, "..") == 0)
+	{
+		free(prompt_data);
+		return (1);
+	}
+	else if (ft_strncmp(input, "/", 1) == 0)
+	{
+		free(prompt_data);
+		return (1);
+	}
+	return (0);
+}
+
+int	free_all(t_begin *begin_list, t_begin_pipes *pipes_list, t_prompt *prompt_data)
 {
 	free(prompt_data);
-	//free_env_export(pipes_list);
+	free_env_export(pipes_list);
+	free(pipes_list->env_list);
+	free(pipes_list->export_list);
+	free(pipes_list->pwd);
+	free(pipes_list->oldpwd);
 	free(begin_list);
 	free(pipes_list);
 	printf("exit\n");
-	//return (sig); ??
-}*/
+	return (0);  // ici je dois return la valeur du signal d'erreur
+}
+
+void	free_env_export(t_begin_pipes *pipes_list)
+{
+	t_var_env		*var_env;
+	t_var_env		*var_env_tofree;
+	t_var_export	*var_export;
+	t_var_export	*var_export_tofree;
+	
+	var_env = pipes_list->env_list->first;
+	while (var_env)
+	{
+		var_env_tofree = var_env;
+		var_env = var_env->next;
+		free(var_env_tofree->variable);
+		free(var_env_tofree->name);
+		free(var_env_tofree->tmp_value);
+		free(var_env_tofree);
+	}
+	var_export = pipes_list->export_list->first;
+	while (var_export)
+	{
+		var_export_tofree = var_export;
+		var_export = var_export->next;
+		free(var_export_tofree->variable);
+		free(var_export_tofree->name);
+		free(var_export_tofree->tmp_value);
+		free(var_export_tofree);
+	}
+}
 
 int	error_pipe_redir(t_begin *begin_list)
 {
