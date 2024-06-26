@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   infile_outfile.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:19:06 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 17:12:07 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 19:33:06 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,7 @@ void	check_infile_part(t_begin_pipes *pipes_list)
 		while (pipe_part->words[i])
 		{
 			if (ft_strcmp(pipe_part->words[i], "<") == 0)
-			{
-				if (pipe_part->infile)
-					free(pipe_part->infile);
-				pipe_part->infile = ft_strdup(pipe_part->words[i + 1]);
-				pipe_part->if_infile = 1;
-				pipe_part->if_heredoc = 0;
-			}
+				bloc_redir_in(pipe_part, i);
 			else if (ft_strcmp(pipe_part->words[i], "<<") == 0)
 			{
 				pipe_part->if_infile = 0;
@@ -71,4 +65,13 @@ void	check_infile_part(t_begin_pipes *pipes_list)
 		tranche_number++;
 		pipe_part = pipe_part->next;
 	}
+}
+
+void	bloc_redir_in(t_pipes_part *pipe_part, int i)
+{
+	if (pipe_part->infile)
+		free(pipe_part->infile);
+	pipe_part->infile = ft_strdup(pipe_part->words[i + 1]);
+	pipe_part->if_infile = 1;
+	pipe_part->if_heredoc = 0;
 }

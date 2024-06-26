@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:57:14 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/26 17:17:18 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:26:00 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,6 @@ int	contain_token(char *str)
 		i++;
 	}
 	return (0);
-}
-
-char	*get_token(char *str, int type)
-{
-	char	*token;
-	int		i;
-
-	token = ft_calloc(sizeof(char), 3);
-	i = 0;
-	if (type == PIPE)
-		token[i] = str[i];
-	else
-	{
-		while (is_token(str[i]) == type && i < 2)
-		{
-			token[i] = str[i];
-			i++;
-		}
-	}
-	return (token);
 }
 
 char	*get_word(char *str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_lists.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 11:46:58 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 16:46:32 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 20:12:02 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_pipes_part	*init_pipe_part(t_begin_pipes *pipes_list, int i)
 	pipe_part->if_heredoc = 0;
 	pipe_part->fd[0] = -1;
 	pipe_part->fd[1] = -1;
+	pipes_list->nb_pipes = 0;
 	pipe_part->save_stdout = pipes_list->_stdout;
 	pipe_part->next = NULL;
 	if (i == 0)

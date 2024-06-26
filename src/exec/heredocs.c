@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 16:14:36 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 14:29:51 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 20:34:49 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,24 @@ void	create_heredocs(t_begin_pipes *pipes_list)
 		pipe_part->heredocs = malloc(sizeof(int) * (count * 2 + 1));
 		i = 0;
 		count = 0;
-		while (pipe_part->words[i])
-		{
-			if (ft_strcmp(pipe_part->words[i], "<<") == 0)
-			{
-				heredoc(pipe_part, pipe_part->words[i + 1], count);
-				count++;
-			}
-			i++;
-		}
+		count = check_n_write_hdoc(pipe_part, count, i);
 		pipe_part->heredocs[count * 2] = -1;
 		pipe_part = pipe_part->next;
 	}
+}
+
+int	check_n_write_hdoc(t_pipes_part *pipe_part, int count, int i)
+{
+	while (pipe_part->words[i])
+	{
+		if (ft_strcmp(pipe_part->words[i], "<<") == 0)
+		{
+			heredoc(pipe_part, pipe_part->words[i + 1], count);
+			count++;
+		}
+		i++;
+	}
+	return (count);
 }
 
 void	heredoc(t_pipes_part *pipe_part, char *end, int count)
@@ -69,4 +75,14 @@ void	heredoc(t_pipes_part *pipe_part, char *end, int count)
 			write(pipe_part->heredocs[count * 2 + 1], line, ft_strlen(line));
 		free(line);
 	}
+}
+
+int	last_heredoc(t_pipes_part *pipe_part)
+{
+	int	i;
+
+	i = 0;
+	while (pipe_part->heredocs[i] != -1)
+		i++;
+	return (pipe_part->heredocs[i - 2]);
 }

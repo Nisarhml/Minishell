@@ -6,7 +6,7 @@
 #    By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/24 16:33:46 by aguezzi           #+#    #+#              #
-#    Updated: 2024/06/25 22:12:05 by aguezzi          ###   ########.fr        #
+#    Updated: 2024/06/26 21:13:47 by aguezzi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ PATHEX = src/exec/
 
 BUILD_PATHS = $(PATHO)
 
-src =	src/main.c\
+src =	src/main.c src/utils.c src/bloc_main.c\
 		src/lexer/utils_lexer.c\
 		src/lexer/lexer.c\
 		src/lexer/token.c\
@@ -44,8 +44,9 @@ src =	src/main.c\
 		src/exec/minishell.c src/exec/create_lists.c src/exec/tokens_error.c src/exec/cmds_args.c \
 		src/exec/infile_outfile.c src/exec/heredocs.c \
 		src/exec/open_check_files.c src/exec/paths.c src/exec/fork_part.c src/exec/builtins.c \
-		src/exec/export_create.c src/exec/cmd_cd.c src/exec/cmd_export_1.c src/exec/cmd_export_2.c src/exec/cmd_unset.c\
-		src/exec/cmd_exit.c src/exec/env.c
+		src/exec/cmd_cd.c src/exec/cmd_export_1.c src/exec/cmd_export_2.c src/exec/cmd_unset.c\
+		src/exec/cmd_exit.c src/exec/env.c src/exec/export_create.c src/exec/export_create_2.c\
+		src/exec/ft_free.c
 
 OBJS = $(addprefix $(PATHO), $(notdir $(patsubst %.c, %.o, $(src))))
 

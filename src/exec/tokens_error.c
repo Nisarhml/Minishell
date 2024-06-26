@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:32:24 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 14:59:13 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:19:01 by aguezzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ int	error_pipe_redir(t_begin *begin_list)
 			return (1);
 		if (bloc2_err(current))
 			return (1);
+		if (!current->next)
+		{
+			if (ft_strcmp(current->value, "|") == 0 && current->token == 4)
+			{
+				printf("syntax error near unexpected token `|'\n");
+				return (1);
+			}
+		}
 		current = current->next;
 	}
 	return (0);
