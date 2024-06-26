@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signaux.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 16:01:26 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 13:45:31 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 17:17:39 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 void	basic_signal(int signal)
 {

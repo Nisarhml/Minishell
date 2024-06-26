@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:30:21 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/25 18:33:10 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 17:18:34 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,9 @@ char	*get_env_value(t_begin_pipes *pipes_list, char *name)
 	current = pipes_list->env_list->first;
 	while (current)
 	{
-		printf("ft_strcmp(current->name, name) = %d\n", ft_strcmp(current->name, name));
-		printf("current->value = %s\n", current->value);
 		if (ft_strcmp(current->name, name) == 0)
 			return (ft_strdup(current->value));
 		current = current->next;
-		printf("current = %s\n", current->name);
 	}
 	return (NULL);
 }

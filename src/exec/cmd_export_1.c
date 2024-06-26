@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:16:04 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/25 20:11:08 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 12:10:43 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part) // les variables possibles : commence par lettre ou '_', et contient lettres '_' et chiffres
+int	command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	if (!pipe_part->args[1])
 		affich_export_list(pipes_list);
@@ -24,7 +24,7 @@ int command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part) // les va
 			set_exit_status(2);
 			return (1);
 		}
-		else // je regarde les args un a un pour voir si ils sont corrects, auquel j'ajoute la variable a mon export_list
+		else
 		{
 			check_args_export(pipes_list, pipe_part->args);
 			return (1);
@@ -33,10 +33,10 @@ int command_export(t_begin_pipes *pipes_list, t_pipes_part *pipe_part) // les va
 	return (1);
 }
 
-void check_args_export(t_begin_pipes *pipes_list, char **args)
+void	check_args_export(t_begin_pipes *pipes_list, char **args)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	set_exit_status(0);
@@ -45,25 +45,27 @@ void check_args_export(t_begin_pipes *pipes_list, char **args)
 		j = 0;
 		while (args[i][j])
 		{
-			if (!(ft_isalnum(args[i][j]) || args[i][j] == '_' || args[i][j] == '=')
+			if (!(ft_isalnum(args[i][j]) || args[i][j] == '_' ||
+				args[i][j] == '=')
 				|| args[i][0] == '=')
 			{
-				printf("minishell: export: `%s`: not a valid identifier\n", args[i]);
+				printf("minishell: export: `%s`: not a valid identifier\n", \
+						args[i]);
 				set_exit_status(1);
-				break;
+				break ;
 			}
 			j++;
 		}
-		if (!args[i][j]) // si je n'ai pas d'erreur de caractere
+		if (!args[i][j])
 			add_arg_export(pipes_list, args[i]);
 		i++;
 	}
 }
 
-void add_arg_export(t_begin_pipes *pipes_list, char *arg) // (tenter de reussir a mettre un \ avant \ et " si on peut)
+void	add_arg_export(t_begin_pipes *pipes_list, char *arg)
 {
-	t_var_export *ref;
-	char *name;	 // contiendra le nom de la variable
+	t_var_export	*ref;
+	char			*name;
 
 	if (ft_strchr(arg, '='))
 	{
@@ -76,7 +78,7 @@ void add_arg_export(t_begin_pipes *pipes_list, char *arg) // (tenter de reussir 
 	while (ref)
 	{
 		if (same_name(ref, name, arg))
-            break;
+			break ;
 		ref = ref->next;
 	}
 	if (!ref)
@@ -85,10 +87,10 @@ void add_arg_export(t_begin_pipes *pipes_list, char *arg) // (tenter de reussir 
 	free(name);
 }
 
-int same_name(t_var_export *ref, char *name, char *arg)
+int	same_name(t_var_export *ref, char *name, char *arg)
 {
-    if (ft_strcmp(ref->name, name) == 0)
-    {
+	if (ft_strcmp(ref->name, name) == 0)
+	{
 		if (ft_strchr(arg, '='))
 		{
 			free(ref->variable);
@@ -97,7 +99,7 @@ int same_name(t_var_export *ref, char *name, char *arg)
 			ref->variable = ft_strdup(arg);
 			ref->value = ft_strchr(ref->tmp_value, '=') + 1;
 		}
-        return (1);
-    }
-    return (0);
+		return (1);
+	}
+	return (0);
 }

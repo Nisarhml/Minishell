@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:17:27 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/25 19:10:49 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 12:22:04 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
+int	command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
-	int i;
+	int	i;
 
 	if (!pipe_part->args[1])
 		printf("\n");
@@ -37,10 +37,10 @@ int command_unset(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 	return (1);
 }
 
-void check_variable_delete(t_begin_pipes *pipes_list, char *name)
+void	check_variable_delete(t_begin_pipes *pipes_list, char *name)
 {
-	t_var_env *var_env;
-	t_var_export *var_export;
+	t_var_env		*var_env;
+	t_var_export	*var_export;
 
 	var_env = pipes_list->env_list->first;
 	if (var_env)
@@ -50,7 +50,7 @@ void check_variable_delete(t_begin_pipes *pipes_list, char *name)
 		delete_in_export(pipes_list, var_export, name);
 }
 
-void delete_in_env(t_begin_pipes *pipes_list, t_var_env *var, char *name)
+void	delete_in_env(t_begin_pipes *pipes_list, t_var_env *var, char *name)
 {
 	if (ft_strcmp(var->name, name) == 0)
 	{
@@ -72,14 +72,15 @@ void delete_in_env(t_begin_pipes *pipes_list, t_var_env *var, char *name)
 				free(pipes_list->env_free->name);
 				free(pipes_list->env_free->tmp_value);
 				free(pipes_list->env_free);
-				break;
+				break ;
 			}
 			var = var->next;
 		}
 	}
 }
 
-void delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, char *name)
+void	delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, \
+						char *name)
 {
 	if (ft_strcmp(var->name, name) == 0)
 	{
@@ -100,7 +101,7 @@ void delete_in_export(t_begin_pipes *pipes_list, t_var_export *var, char *name)
 				free(pipes_list->export_free->name);
 				free(pipes_list->export_free->tmp_value);
 				free(pipes_list->export_free);
-				break;
+				break ;
 			}
 			var = var->next;
 		}

@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:16:16 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/25 18:22:28 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 11:58:06 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int command_cd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
+int	command_cd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	char	pwd[1024];
 
 	if (pipe_part->args[1])
 	{
 		if (chdir(pipe_part->args[1]) == -1)
-			printf("minishell: cd: %s: No such file or directory\n", pipe_part->args[1]);
+			printf("minishell: cd: %s: No such file or directory\n", \
+					pipe_part->args[1]);
 		else
 		{
 			if (pipes_list->oldpwd)
@@ -49,7 +50,7 @@ void	change_oldpwd_path(t_begin_pipes *pipes_list, char *path)
 		if (ft_strcmp(var_env->name, "OLDPWD") == 0)
 		{
 			modify_env(var_env, "OLDPWD", path);
-			break;
+			break ;
 		}
 		var_env = var_env->next;
 	}
@@ -59,7 +60,7 @@ void	change_oldpwd_path(t_begin_pipes *pipes_list, char *path)
 		if (ft_strcmp(var_export->name, "OLDPWD") == 0)
 		{
 			modify_export(var_export, "OLDPWD", path);
-			break;
+			break ;
 		}
 		var_export = var_export->next;
 	}
@@ -76,7 +77,7 @@ void	change_pwd_path(t_begin_pipes *pipes_list, char *path)
 		if (ft_strcmp(var_env->name, "PWD") == 0)
 		{
 			modify_env(var_env, "PWD", path);
-			break;
+			break ;
 		}
 		var_env = var_env->next;
 	}
@@ -86,7 +87,7 @@ void	change_pwd_path(t_begin_pipes *pipes_list, char *path)
 		if (ft_strcmp(var_export->name, "PWD") == 0)
 		{
 			modify_export(var_export, "PWD", path);
-			break;
+			break ;
 		}
 		var_export = var_export->next;
 	}

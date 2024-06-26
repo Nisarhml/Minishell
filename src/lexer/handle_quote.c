@@ -6,11 +6,11 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 11:54:50 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/19 18:34:01 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:18:57 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h" //norm done !
+#include "../../includes/minishell.h"
 
 int	is_in_quote(char c)
 {

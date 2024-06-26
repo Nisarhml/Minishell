@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:13:43 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/25 23:25:06 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/26 11:56:00 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
+int	command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
-	t_var_env *var;
+	t_var_env	*var;
 
 	if (pipe_part->args[1])
 	{
@@ -40,7 +40,7 @@ int command_env(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 	return (1);
 }
 
-int command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
+int	command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 {
 	if (pipe_part->args[1])
 	{
@@ -49,14 +49,14 @@ int command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 			if (pipe_part->args[1][1] != '-')
 			{
 				pipe_part->args[1][2] = '\0';
-				printf("minishell: pwd: %s: invalid option\n", pipe_part->args[1]);
+				printf("minishell: pwd:%s: invalid opt\n", pipe_part->args[1]);
 				set_exit_status(2);
 				return (1);
 			}
 			else if (pipe_part->args[1][2])
 			{
 				pipe_part->args[1][2] = '\0';
-				printf("minishell: pwd: %s: invalid option\n", pipe_part->args[1]);
+				printf("minishell: pwd:%s: invalid opt\n", pipe_part->args[1]);
 				set_exit_status(2);
 				return (1);
 			}
@@ -68,10 +68,10 @@ int command_pwd(t_begin_pipes *pipes_list, t_pipes_part *pipe_part)
 	return (1);
 }
 
-int command_echo(t_pipes_part *pipe_part)
+int	command_echo(t_pipes_part *pipe_part)
 {
-	int i;
-	int saut;
+	int	i;
+	int	saut;
 
 	if (pipe_part->args[1])
 	{
@@ -97,9 +97,9 @@ int command_echo(t_pipes_part *pipe_part)
 	return (1);
 }
 
-void loop_flag_echo(char **args, int *i)
+void	loop_flag_echo(char **args, int *i)
 {
-	int j;
+	int	j;
 
 	while (1)
 	{
@@ -110,15 +110,16 @@ void loop_flag_echo(char **args, int *i)
 			while (args[*i][j] == 'n')
 				j++;
 			if (args[*i][j])
-				return;
+				return ;
 		}
 		else
-			return;
+			return ;
 		(*i)++;
 	}
 }
 
-int builtins(t_begin *begin_list, t_begin_pipes *pipes_list, t_pipes_part *pipe_part) // mettre les builtins sous forme d'erreur pour le moment.. A GERER plus tard !
+int	builtins(t_begin *begin_list, t_begin_pipes *pipes_list, \
+			t_pipes_part *pipe_part)
 {
 	if (ft_strcmp(pipe_part->cmd, "echo") == 0)
 		return (command_echo(pipe_part));
