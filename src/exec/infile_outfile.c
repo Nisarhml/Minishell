@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   infile_outfile.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:19:06 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 19:33:06 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 12:37:07 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h" 
+#include "../../includes/minishell.h"
 
 void	check_outfile_part(t_begin_pipes *pipes_list)
 {
@@ -51,13 +51,12 @@ void	check_infile_part(t_begin_pipes *pipes_list)
 		i = 0;
 		while (pipe_part->words[i])
 		{
-			if (ft_strcmp(pipe_part->words[i], "<") == 0)
+			if (ft_strcmp(pipe_part->words[i], "<") == 0
+				&& pipe_part->type[i] != 5)
 				bloc_redir_in(pipe_part, i);
-			else if (ft_strcmp(pipe_part->words[i], "<<") == 0)
-			{
-				pipe_part->if_infile = 0;
+			else if (ft_strcmp(pipe_part->words[i], "<<") == 0
+				&& pipe_part->type[i] != 5)
 				pipe_part->if_heredoc = 1;
-			}
 			i++;
 		}
 		if (!pipe_part->infile && tranche_number != 1)

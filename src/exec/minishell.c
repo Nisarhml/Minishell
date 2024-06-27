@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:21:59 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 20:33:56 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 12:41:35 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,25 @@ void	exec_no_pipe(t_begin *begin_list, t_begin_pipes *pipes_list, char **env)
 {
 	t_pipes_part	*pipe_part;
 	char			*cmd;
-	int				ret;
 
 	pipe_part = pipes_list->first;
 	cmd = ft_strdup(pipe_part->cmd);
-	ret = 1;
+	pipes_list->ret = 1;
 	if (cmd)
 	{
 		if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "export") == 0
 			|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "cd") == 0
 			|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0
 			|| ft_strcmp(cmd, "exit") == 0)
-			ret = prepa_builtin_solo(pipes_list, pipe_part);
-		if (ret)
+			pipes_list->ret = prepa_builtin_solo(pipes_list, pipe_part);
+		if (pipes_list->ret)
 		{
 			if (!builtins(begin_list, pipes_list, pipe_part))
 			{
 				begin_forks(begin_list, pipes_list, env);
 				close_pipes_parent(pipes_list);
 				wait_childs(pipes_list);
+				set_basic_signals();
 			}
 		}
 	}

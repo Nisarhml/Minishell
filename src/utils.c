@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:45:08 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 21:34:59 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 11:07:18 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ int	special_chr_prompt(t_prompt *prompt_data, char *input)
 		free(prompt_data);
 		return (1);
 	}
-	else if (ft_strncmp(input, "/", 1) == 0)
-	{
-		free(prompt_data);
-		return (1);
-	}
 	return (0);
 }
 
@@ -53,6 +48,8 @@ void	reinit_exec(t_begin_pipes *pipes_list)
 	pipe_part = pipes_list->first;
 	while (pipe_part)
 	{
+		if (pipe_part->type)
+			free(pipe_part->type);
 		if (pipe_part->infile)
 			free(pipe_part->infile);
 		if (pipe_part->outfile)

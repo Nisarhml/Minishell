@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 16:14:36 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 20:34:49 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 10:44:08 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	create_heredocs(t_begin_pipes *pipes_list)
 		i = 0;
 		while (pipe_part->words[i])
 		{
-			if (ft_strcmp(pipe_part->words[i], "<<") == 0)
+			if (ft_strcmp(pipe_part->words[i], "<<") == 0
+				&& pipe_part->type[i] != 5)
 				count++;
 			i++;
 		}
@@ -42,7 +43,8 @@ int	check_n_write_hdoc(t_pipes_part *pipe_part, int count, int i)
 {
 	while (pipe_part->words[i])
 	{
-		if (ft_strcmp(pipe_part->words[i], "<<") == 0)
+		if (ft_strcmp(pipe_part->words[i], "<<") == 0
+			&& pipe_part->type[i] != 5)
 		{
 			heredoc(pipe_part, pipe_part->words[i + 1], count);
 			count++;

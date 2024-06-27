@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bloc_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 21:05:26 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 21:27:56 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 12:36:08 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,29 @@ void	cleanup_and_exit(t_begin *begin_list, t_begin_pipes *pipes_list, \
 {
 	free_all(begin_list, pipes_list, prompt_data);
 	exit(exit_code);
+}
+
+void	init_pipes_list(t_begin_pipes *pipes_list, char **env)
+{
+	int	i;
+
+	pipes_list->nb_pipes = 0;
+	pipes_list->p = NULL;
+	pipes_list->pids = NULL;
+	pipes_list->pwd = NULL;
+	pipes_list->oldpwd = NULL;
+	pipes_list->val_dollr = NULL;
+	pipes_list->nb_mots = 0;
+	pipes_list->sortie_error = 0;
+	pipes_list->_stdout = dup(STDOUT_FILENO);
+	pipes_list->_stdin = dup(STDIN_FILENO);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+			pipes_list->pwd = ft_strdup(env[i] + 4);
+		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
+			pipes_list->oldpwd = ft_strdup(env[i] + 7);
+		i++;
+	}
 }

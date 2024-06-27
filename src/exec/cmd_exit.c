@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 21:35:52 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 15:48:28 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/27 12:35:13 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ int	command_exit(t_begin *begin_list, t_begin_pipes *pipes_list, \
 	{
 		if (pipes_list->nb_pipes == 0)
 			printf("exit\n");
-		set_exit_status(pipes_list->sortie_error % 256);
 		free_exit(begin_list, pipes_list);
-		exit(pipes_list->sortie_error % 256);
+		exit(*(get_exit_status()));
 	}
 	else if (!pipe_part->args[2])
 		bloc_2_exit(begin_list, pipes_list, pipe_part);

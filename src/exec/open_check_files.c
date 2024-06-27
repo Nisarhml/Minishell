@@ -6,7 +6,7 @@
 /*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 20:55:01 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 14:42:36 by nihamila         ###   ########.fr       */
+/*   Updated: 2024/06/27 12:02:13 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ int	open_close_files(t_pipes_part *pipe_part)
 	i = 0;
 	while (pipe_part->words[i])
 	{
-		if (ft_strcmp(pipe_part->words[i], "<") == 0)
+		if (ft_strcmp(pipe_part->words[i], "<") == 0
+			&& pipe_part->type[i] != 5)
 		{
 			if (!open_infile(pipe_part, pipe_part->words[i + 1]))
 				return (0);
 		}
-		else if (ft_strcmp(pipe_part->words[i], ">") == 0
-			|| ft_strcmp(pipe_part->words[i], ">>") == 0)
+		else if ((ft_strcmp(pipe_part->words[i], ">") == 0
+				|| ft_strcmp(pipe_part->words[i], ">>") == 0)
+			&& pipe_part->type[i] != 5)
 		{
 			if (!open_outfile(pipe_part, pipe_part->words[i + 1], \
 				pipe_part->words[i]))

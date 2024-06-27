@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:39:46 by nihamila          #+#    #+#             */
-/*   Updated: 2024/06/26 22:06:44 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 12:31:49 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **env)
 	}
 	init_structs(&begin_list, &pipes_list, env);
 	input_loop(begin_list, pipes_list, env);
-	cleanup_and_exit(begin_list, pipes_list, NULL, EXIT_SUCCESS);
+	cleanup_and_exit(begin_list, pipes_list, NULL, *get_exit_status());
 	return (0);
 }
 

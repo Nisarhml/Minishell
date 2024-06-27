@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_part.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguezzi <aguezzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nihamila <nihamila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:00:42 by aguezzi           #+#    #+#             */
-/*   Updated: 2024/06/26 20:34:33 by aguezzi          ###   ########.fr       */
+/*   Updated: 2024/06/27 11:37:42 by nihamila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	child_process(t_begin *begin_list, t_begin_pipes *pipes_list, \
 {
 	if (pipes_list->pids[pipes_list->i] == 0)
 	{
+		set_command_signals();
 		if (!open_close_files(pipe_part))
 			exit (1);
 		pipe_part->path_cmd = search_the_path(pipes_list, pipe_part);
@@ -58,6 +59,7 @@ void	child_process(t_begin *begin_list, t_begin_pipes *pipes_list, \
 			exit (0);
 		execve(pipe_part->path_cmd, pipe_part->args, env);
 	}
+	ignore_signals();
 }
 
 void	wait_childs(t_begin_pipes *pipes_list)
@@ -69,10 +71,17 @@ void	wait_childs(t_begin_pipes *pipes_list)
 	while (i < pipes_list->nb_pipes + 1)
 	{
 		waitpid(pipes_list->pids[i], &status, 0);
+		set_basic_signals();
 		if (WIFEXITED(status))
 			set_exit_status(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
+		{
 			set_exit_status(128 + WTERMSIG(status));
+			if (WTERMSIG(status) == 2)
+				printf("\n");
+			if (WTERMSIG(status) == 3)
+				printf("Quit (core dumped)\n");
+		}
 		else
 			set_exit_status(127);
 		i++;
